@@ -13,7 +13,6 @@ class UserController (private val userService: UserService){
     fun getUser(@PathVariable("userId") userId: Long): RestApiResponse{
         val user = this.userService.findUser(userId)
         val data = mutableMapOf<Any, Any>()
-
         return RestApiResponse(
             status = "OK",
             description = "success",
