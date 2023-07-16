@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.busy.honey.stock.investment.users.UserServiceTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-07-16T08:36:32" hostname="LOCALHOST" time="1.045">
+  <properties/>
+  <testcase name="유저 정보 변경 테스트, 만약 패스워드와 컨펌된 패스워드가 같지 않을 때" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="1.034"/>
+  <testcase name="유저 정보 변경 테스트, 만약 유저가 생성되지 않았는데 유저를 변경한 경우" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="0.001"/>
+  <testcase name="유저 정보 변경 테스트" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="0.001"/>
+  <testcase name="유저 가져오기 테스트" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="0.001"/>
+  <testcase name="유저 생성 테스트" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="0.001"/>
+  <testcase name="유저 삭제 테스트" classname="com.busy.honey.stock.investment.users.UserServiceTests" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
