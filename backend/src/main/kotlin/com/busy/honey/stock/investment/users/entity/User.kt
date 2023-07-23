@@ -1,14 +1,17 @@
 package com.busy.honey.stock.investment.users.entity
 
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
+@Entity
+@Table(name="users")
 class User(
-    var userId: Long,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    var userId: Long?,
     var email: String,
-    var userName: String,
+    var username: String,
     var password: String,
-    var createdAt: LocalDateTime?
-) {
-
-}
+    var createdAt: LocalDateTime
+)

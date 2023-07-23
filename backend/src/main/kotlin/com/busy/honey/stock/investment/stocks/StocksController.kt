@@ -12,7 +12,12 @@ class StocksController(private val stocksService: StocksService) {
     @GetMapping("/{stocksId}")
     fun getStocks(@PathVariable("stocksId") stocksId: Long): RestApiResponse {
         val stocks = this.stocksService.getStocks(stocksId)
+
         val data = mutableMapOf<Any, Any>()
+        data["stocksName"] = stocks!!.stocksName
+        data["createdAt"] = stocks.createdAt.toString()
+        data["stockShares"] = 0
+        data["financialStatementsContent"] = stocks.financialStatementsContent
 
         return RestApiResponse(
             status = "OK",
@@ -32,14 +37,21 @@ class StocksController(private val stocksService: StocksService) {
     }
 
     @PutMapping("/{stocksId}")
-    fun updateStocks(@PathVariable("stocksId") stocksId: Long,
-                       @RequestBody updateStocksDto: UpdateStocksDto
+    fun updateStocks(
+        @PathVariable("stocksId") stocksId: Long,
+        @RequestBody updateStocksDto: UpdateStocksDto
     ): RestApiResponse {
         val stocks = this.stocksService.update(stocksId, updateStocksDto)
+        val data = mutableMapOf<Any, Any>()
+        data["stocksName"] = stocks.stocksName
+        data["createdAt"] = stocks.createdAt.toString()
+        data["stockShares"] = stocks.stockShares
+        data["financialStatementsContent"] = stocks.financialStatementsContent
+
         return RestApiResponse(
             status = "OK",
             description = "success",
-            data = null
+            data = data
         )
     }
 

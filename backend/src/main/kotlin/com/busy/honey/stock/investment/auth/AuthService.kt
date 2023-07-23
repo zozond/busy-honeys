@@ -5,15 +5,11 @@ import com.busy.honey.stock.investment.users.UserService
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService (private val userService: UserService){
+class AuthService (val userService: UserService){
 
 
     fun login(loginDto: LoginDto): Boolean{
-        val user = userService.repository.filter {
-            (_, user) -> user.email == loginDto.email && user.password == loginDto.password
-        }
-
-        return user.isNotEmpty()
+        return userService.findUser(email=loginDto.email, password = loginDto.password) != null
     }
 
     fun logout(){

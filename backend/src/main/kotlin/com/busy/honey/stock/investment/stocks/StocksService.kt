@@ -3,47 +3,41 @@ package com.busy.honey.stock.investment.stocks
 import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
 import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
 import com.busy.honey.stock.investment.stocks.entity.Stocks
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StocksService {
-    val repository = mutableMapOf<Long, Stocks>()
+class StocksService(private val stocksRepository: StocksRepository) {
 
     fun create(createStocksDto: CreateStocksDto): Stocks {
-        val stocksId = repository.size.toLong()
-        val stocks = Stocks(
-            stocksId = stocksId,
+        return stocksRepository.save(Stocks(
+            stocksId = null,
             stocksName = createStocksDto.stocksName,
             financialStatementsContent = createStocksDto.financialStatementsContent,
+            stockShares = 10000,
             createdAt = LocalDateTime.now()
-        )
-        repository[stocksId] = stocks
-        return stocks
+        ))
     }
 
+    @Transactional
     fun update(stocksId: Long, updateStocksDto: UpdateStocksDto): Stocks {
-        if (repository[stocksId] == null){
-            throw Exception("생성되지 않은 종목을 업데이트")
-        }
+        val optionalStocks = stocksRepository.findById(stocksId)
 
-        val newStocks = Stocks(
-            stocksId = stocksId,
-            stocksName = updateStocksDto.stocksName,
-            financialStatementsContent = updateStocksDto.financialStatementsContent,
-            createdAt = LocalDateTime.now()
-        )
-        repository[stocksId] = newStocks
-        return newStocks
+        if (optionalStocks.isEmpty){
+            throw Exception("생성되지 않은 종목을 업데이트 하려고 함")
+        }
+        val stocks = optionalStocks.get()
+        stocks.stocksName = updateStocksDto.stocksName
+        stocks.financialStatementsContent = updateStocksDto.financialStatementsContent
+        return stocksRepository.save(stocks)
     }
 
-    fun delete(stocksId: Long): Stocks?{
-        val stocks = repository[stocksId]
-        repository.remove(stocksId)
-        return stocks
+    fun delete(stocksId: Long){
+        stocksRepository.deleteById(stocksId)
     }
 
     fun getStocks(stocksId: Long): Stocks? {
-        return repository[stocksId]
+        return stocksRepository.findById(stocksId).get()
     }
 }

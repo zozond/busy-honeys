@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.1.1"
+	id("org.springframework.boot") version "3.1.2"
+//	id("org.springframework.boot") version "2.7.14"
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.jpa") version "1.8.22"
 }
 
 group = "com.busy.honey.stock"
@@ -25,28 +27,21 @@ repositories {
 }
 
 dependencies {
-//	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-devtools")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+	implementation("org.springframework.boot:spring-boot-starter-websocket:3.1.2")
+
+	// https://mvnrepository.com/artifact/com.h2database/h2
+	implementation("com.h2database:h2:2.2.220")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.mockk:mockk:1.13.5")
 
 }
-
-//val fatJar = task("fatJar", type = Jar::class) {
-//	manifest {
-//		attributes["Main-Class"] = "com.busy.honey.stock.investment.InvestmentApplicationKt"
-//	}
-//
-//	from(configurations.compileClasspath.get().map { if (it.isDirectory()) it else zipTree(it) })
-//	with(tasks["jar"] as CopySpec)
-//	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//}
-//tasks.build{
-//	dependsOn(fatJar)
-//}
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
