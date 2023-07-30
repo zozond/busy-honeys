@@ -4,7 +4,6 @@
     <router-link to="/traiding">TraidingView</router-link>
     <router-link to="/apex">Apexchart</router-link>
     <router-view></router-view>
-	<h1>test</h1>
 
   </main>
 </template>
@@ -32,9 +31,6 @@ import { RouterLink, RouterView } from 'vue-router'
 		div.containRoute {margin: 20px 0; padding: 8px 12px; border-radius: 12px; border: 1px solid #eee; min-height: 300px;}
 	}
 
-	.chart-container {
-	height: calc(100% - 3.2em);
-}
 
 
 

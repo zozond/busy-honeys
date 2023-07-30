@@ -174,6 +174,6 @@ const changeType = () => {
 </template>
 <style scoped>
 .chart-container {
-	height: calc(100% - 3.2em);
+	height: 300px;
 }
 </style>
