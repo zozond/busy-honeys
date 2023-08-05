@@ -23,14 +23,12 @@ class StockController (private val stockService: StockService,
      * 주식 주문 내역 확인
      */
     @GetMapping("/{userId}/history")
-    fun getUserHistory(@PathVariable("stocksId") userId: Long,
-                       @PathParam("limit") limit: Int,
-                       @PathParam("offset") offset: Int): RestApiResponse{
+    fun getUserHistory(@PathVariable("userId") userId: Long): RestApiResponse{
 
         val historyList = this.stockHistoryService.getHistory(
             userId = userId,
-            limit = limit,
-            offset = offset
+            limit = 10000,
+            offset = 0
         )
         val data = mutableMapOf<Any, Any>()
         data.put("history", historyList)
@@ -44,7 +42,7 @@ class StockController (private val stockService: StockService,
     /**
      * 주문 매도 내역 정정
      */
-    @PutMapping("/stock/{userId}/{sellingPriceId}/sell")
+    @PutMapping("/{userId}/{sellingPriceId}/sell")
     fun modifyStockSell(@PathVariable("sellingPriceId") sellingPriceId: Long,
                         @PathVariable("userId") userId: Long,
                         @RequestBody sellingPriceDto: SellingPriceDto
@@ -65,7 +63,7 @@ class StockController (private val stockService: StockService,
     /**
      * 주문 매수 내역 정정
      */
-    @PutMapping("/stock/{userId}/{buyingPriceId}/buy")
+    @PutMapping("/{userId}/{buyingPriceId}/buy")
     fun modifyStockBuy(@PathVariable("buyingPriceId") buyingPriceId: Long,
                        @PathVariable("userId") userId: Long,
                         @RequestBody buyingPriceDto: BuyingPriceDto
@@ -76,7 +74,7 @@ class StockController (private val stockService: StockService,
         data.put("spreadId", buyingPriceId)
         return RestApiResponse(
             status = "OK",
-            description = description,
+            description = "",
             data = data
         )
     }
@@ -84,7 +82,7 @@ class StockController (private val stockService: StockService,
     /**
      * 주식 매수
      */
-    @PostMapping("/stock/buy")
+    @PostMapping("/buy")
     fun buyStock(@RequestBody buyStockDto: BuyStockDto): RestApiResponse {
         this.stockHistoryService.addBuyStockHistory(buyStockDto)
 
@@ -101,7 +99,7 @@ class StockController (private val stockService: StockService,
     /**
      * 주식 매도
      */
-    @PostMapping("/stock/sell")
+    @PostMapping("/sell")
     fun sellStock(@RequestBody sellStockDto: SellStockDto): RestApiResponse{
         this.stockHistoryService.addSellStockHistory(sellStockDto)
 

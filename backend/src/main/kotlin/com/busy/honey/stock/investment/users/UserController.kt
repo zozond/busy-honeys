@@ -35,6 +35,7 @@ class UserController (private val userService: UserService){
         data["email"] = user.email
         data["userName"] = user.username
         data["userId"] = user.userId!!
+        data["accountId"] = user.accountId
 
         return RestApiResponse(
             status = "OK",

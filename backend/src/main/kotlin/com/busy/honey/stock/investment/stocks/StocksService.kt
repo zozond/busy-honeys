@@ -1,23 +1,32 @@
 package com.busy.honey.stock.investment.stocks
 
+import com.busy.honey.stock.investment.stock.StockService
 import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
 import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
 import com.busy.honey.stock.investment.stocks.entity.Stocks
+import jakarta.annotation.PostConstruct
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StocksService(private val stocksRepository: StocksRepository) {
+class StocksService(private val stocksRepository: StocksRepository,
+                    private val stockService: StockService) {
 
     fun create(createStocksDto: CreateStocksDto): Stocks {
-        return stocksRepository.save(Stocks(
+        val stocks = stocksRepository.save(Stocks(
             stocksId = null,
             stocksName = createStocksDto.stocksName,
             financialStatementsContent = createStocksDto.financialStatementsContent,
             stockShares = 10000,
             createdAt = LocalDateTime.now()
         ))
+
+        stockService.initStocks(
+            stocksId = stocks.stocksId!!, price = 1000, amount = 10000, userId = 1L
+        )
+
+        return stocks
     }
 
     @Transactional

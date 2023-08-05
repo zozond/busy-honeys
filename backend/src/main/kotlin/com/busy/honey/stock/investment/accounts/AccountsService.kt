@@ -31,4 +31,24 @@ class AccountsService (val accountsRepository: AccountsRepository){
         toAccount.money += price
         accountsRepository.save(toAccount)
     }
+
+    fun deposit(sellerAccountId: Long, buyerAccountId: Long, price: Int){
+        val optionalSellerAccount = accountsRepository.findById(sellerAccountId)
+        val optionalBuyerAccount = accountsRepository.findById(buyerAccountId)
+
+        if(optionalSellerAccount.isEmpty || optionalBuyerAccount.isEmpty){
+            throw Exception("현재 계좌가 존재 하지 않습니다.")
+        }
+        val buyerAccount = optionalBuyerAccount.get()
+        if (buyerAccount.money < price){
+            throw Exception("보내는 사람의 현재 계좌에 돈이 없습니다.")
+        }
+
+        buyerAccount.money -= price
+        accountsRepository.save(buyerAccount)
+
+        val sellerAccount = optionalSellerAccount.get()
+        sellerAccount.money += price
+        accountsRepository.save(sellerAccount)
+    }
 }

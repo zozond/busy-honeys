@@ -1,21 +1,16 @@
-//package com.busy.honey.stock.investment.stocks
-//
-//import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
-//import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
-//import com.busy.honey.stock.investment.stocks.entity.Stocks
-//import org.junit.jupiter.api.Assertions
-//import org.junit.jupiter.api.BeforeEach
-//import org.junit.jupiter.api.DisplayName
-//import org.junit.jupiter.api.Test
-//import java.time.LocalDateTime
-//
-//class StocksServiceTests {
-//    lateinit var stocksService: StocksService
-//
-//    @BeforeEach
-//    fun setup() {
-//        this.stocksService = StocksService()
-//    }
+package com.busy.honey.stock.investment.stocks
+
+import com.busy.honey.stock.investment.users.UserService
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+class StocksServiceTests {
+    @BeforeEach
+    fun setup() {
+    }
 //
 //    @Test
 //    @DisplayName("종목 가져오기 테스트")
@@ -98,5 +93,5 @@
 //        )
 //        Assertions.assertThrows(Exception::class.java) { stocksService.update(stocksId, updateStocksDto) }
 //    }
-//
-//}
+
+}

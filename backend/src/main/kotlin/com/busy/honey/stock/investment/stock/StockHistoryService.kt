@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StockHistoryService (val stockHistoryRepository: StockHistoryRepository,
-                           val sellingStockRepository: SellingStockRepository,
-                           val buyingStockRepository: BuyingStockRepository){
+class StockHistoryService (val stockHistoryRepository: StockHistoryRepository){
 
     fun getHistory(userId: Long, limit: Int, offset: Int): List<StockHistory>{
         return stockHistoryRepository.findByUserId(userId, PageRequest.of(offset, limit, Sort.by("timestamp").descending()))
@@ -49,7 +47,7 @@ class StockHistoryService (val stockHistoryRepository: StockHistoryRepository,
 
 
     fun addModifyingSellingStockHistory(sellingStockId: Long, userId: Long, sellingPriceDto: SellingPriceDto){
-        val optionalSellingStock = sellingStockRepository.findById(sellingStockId)
+        val optionalSellingStock = stockHistoryRepository.findById(sellingStockId)
         if (optionalSellingStock.isEmpty){
             return
         }
@@ -59,7 +57,7 @@ class StockHistoryService (val stockHistoryRepository: StockHistoryRepository,
             StockHistory(
                 stockHistoryId = null,
                 stocksId = sellingStock.stocksId,
-                stockAmount = sellingStock.amount,
+                stockAmount = sellingStock.stockAmount,
                 price = sellingStock.price,
                 userId = userId,
                 historyType = "sell",
@@ -69,7 +67,7 @@ class StockHistoryService (val stockHistoryRepository: StockHistoryRepository,
     }
 
     fun addModifyingBuyingStockHistory(buyingStockId: Long, userId: Long, buyingPriceDto: BuyingPriceDto){
-        val optionalBuyingStock = buyingStockRepository.findById(buyingStockId)
+        val optionalBuyingStock = stockHistoryRepository.findById(buyingStockId)
         if (optionalBuyingStock.isEmpty){
             return
         }
@@ -79,7 +77,7 @@ class StockHistoryService (val stockHistoryRepository: StockHistoryRepository,
             StockHistory(
                 stockHistoryId = null,
                 stocksId = buyingStock.stocksId,
-                stockAmount = buyingStock.amount,
+                stockAmount = buyingStock.stockAmount,
                 price = buyingStock.price,
                 userId = userId,
                 historyType = "sell",

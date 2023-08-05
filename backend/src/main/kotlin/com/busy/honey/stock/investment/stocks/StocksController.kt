@@ -29,10 +29,15 @@ class StocksController(private val stocksService: StocksService) {
     @PostMapping
     fun createStocks(@RequestBody createStocksDto: CreateStocksDto): RestApiResponse {
         val stocks = this.stocksService.create(createStocksDto)
+        val data = mutableMapOf<Any, Any>()
+        data["stocksName"] = stocks.stocksName
+        data["stocksId"] = stocks.stocksId!!
+        data["stockShares"] = stocks.stockShares
+        data["financialStatementsContent"] = stocks.financialStatementsContent
         return RestApiResponse(
             status = "OK",
             description = "success",
-            data = null
+            data = data
         )
     }
 

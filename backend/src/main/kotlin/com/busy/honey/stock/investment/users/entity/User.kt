@@ -13,5 +13,6 @@ class User(
     var email: String,
     var username: String,
     var password: String,
+    var accountId: Long,
     var createdAt: LocalDateTime
 )
