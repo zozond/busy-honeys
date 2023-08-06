@@ -1,11 +1,20 @@
 package com.busy.honey.stock.investment.accounts
 
 import com.busy.honey.stock.investment.accounts.dto.DepositDto
+import com.busy.honey.stock.investment.accounts.entity.Account
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
 class AccountsService (val accountsRepository: AccountsRepository){
+
+    fun findById(accountsId: Long): Account?{
+        val optionalAccount = accountsRepository.findById(accountsId);
+        if (optionalAccount.isEmpty){
+            return null
+        }
+        return optionalAccount.get()
+    }
 
     @Transactional
     fun deposit(depositDto: DepositDto){

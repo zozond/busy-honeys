@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController
 class ChartController (val chartService: ChartService)
 {
 
-    @GetMapping("/{stockId}")
-    fun getChart(@PathVariable("stockId") stockId: Long,
+    @GetMapping("/{stocksId}")
+    fun getChart(@PathVariable("stocksId") stocksId: Long,
                  @RequestBody chartDto: ChartDto
     ): RestApiResponse{
-
-        chartService.getChart(stockId, chartDto)
+        val data = mutableMapOf<Any, Any>()
+        data["chart"] = chartService.getChart(stocksId, chartDto)
         return RestApiResponse(
             status = "OK",
             description = "",
-            data = null
+            data = data
         )
     }
 

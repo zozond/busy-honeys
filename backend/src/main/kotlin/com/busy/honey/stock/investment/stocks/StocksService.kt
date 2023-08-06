@@ -1,6 +1,7 @@
 package com.busy.honey.stock.investment.stocks
 
 import com.busy.honey.stock.investment.stock.StockService
+import com.busy.honey.stock.investment.stock.entity.StockPrice
 import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
 import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
 import com.busy.honey.stock.investment.stocks.entity.Stocks
@@ -48,5 +49,10 @@ class StocksService(private val stocksRepository: StocksRepository,
 
     fun getStocks(stocksId: Long): Stocks? {
         return stocksRepository.findById(stocksId).get()
+    }
+
+
+    fun getAllStocks(): List<Stocks>{
+        return stocksRepository.findAll()
     }
 }

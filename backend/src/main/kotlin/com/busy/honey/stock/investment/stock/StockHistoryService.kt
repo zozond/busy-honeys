@@ -5,6 +5,7 @@ import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
 import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
 import com.busy.honey.stock.investment.stock.entity.StockHistory
+import com.busy.honey.stock.investment.stock.repository.StockHistoryRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service

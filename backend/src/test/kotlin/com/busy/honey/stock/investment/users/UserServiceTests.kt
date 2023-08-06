@@ -2,10 +2,10 @@ package com.busy.honey.stock.investment.users
 
 import com.busy.honey.stock.investment.accounts.AccountsRepository
 import com.busy.honey.stock.investment.accounts.entity.Account
-import com.busy.honey.stock.investment.stocks.StocksService
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
 import com.busy.honey.stock.investment.users.entity.User
+import com.busy.honey.stock.investment.users.repository.UserRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -73,7 +73,7 @@ class UserServiceTests {
         val account = Account(accountId = 0L, money = 1000000)
         whenever(accountsRepository.save(anyVararg(Account::class))).thenReturn(account)
         whenever(userRepository.save(anyVararg(User::class))).thenReturn(user)
-        assertEquals(user, userService.create(createUserDto))
+        assertEquals(user, userService.createAdminAndBot(createUserDto))
     }
 
     @Test
@@ -100,7 +100,7 @@ class UserServiceTests {
         whenever(accountsRepository.save(anyVararg(Account::class))).thenReturn(account)
         whenever(userRepository.save(anyVararg(User::class))).thenReturn(user)
         whenever(userRepository.findById(userId)).thenReturn(Optional.empty())
-        assertEquals(user, userService.create(createUserDto))
+        assertEquals(user, userService.createAdminAndBot(createUserDto))
 
         userService.delete(userId)
         assertNull(userService.findUser(userId))
@@ -140,10 +140,10 @@ class UserServiceTests {
         )
 
         val userService : UserService = mock()
-        whenever(userService.create(createUserDto)).thenReturn(user)
+        whenever(userService.createAdminAndBot(createUserDto)).thenReturn(user)
         whenever(userService.update(userId, updateUserDto)).thenReturn(updatedUser)
 
-        val result =  userService.create(createUserDto)
+        val result =  userService.createAdminAndBot(createUserDto)
         assertEquals(user, result)
         assertNotEquals(username, userService.update(userId, updateUserDto).username)
     }
@@ -173,12 +173,12 @@ class UserServiceTests {
         val newPasswordConfirm = "admin2"
         val updateUserDto = UpdateUserDto(newUsername, newPassword, newPasswordConfirm)
         val userService : UserService = mock()
-        whenever(userService.create(createUserDto)).thenReturn(user)
+        whenever(userService.createAdminAndBot(createUserDto)).thenReturn(user)
         whenever(userService.update(userId, updateUserDto)).then {
             throw Exception("새로운 패스워드와 컨펌된 패스워드가 같지 않음.")
         }
 
-        val result =  userService.create(createUserDto)
+        val result =  userService.createAdminAndBot(createUserDto)
         assertEquals(user, result)
         assertThrows(Exception::class.java) {
             userService.update(userId, updateUserDto)

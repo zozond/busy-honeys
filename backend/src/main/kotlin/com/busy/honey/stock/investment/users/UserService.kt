@@ -5,31 +5,18 @@ import com.busy.honey.stock.investment.accounts.entity.Account
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
 import com.busy.honey.stock.investment.users.entity.User
-import jakarta.annotation.PostConstruct
+import com.busy.honey.stock.investment.users.repository.UserRepository
 import jakarta.transaction.Transactional
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class UserService (val userRepository: UserRepository,
                    val accountsRepository: AccountsRepository){
-    @PostConstruct
-    fun initialize(){
-        val account = accountsRepository.save(Account(accountId = null, money = 1000000))
-        userRepository.save(User(
-            userId = null,
-            email = "admin@admin.com",
-            username = "관리자",
-            password = "admin",
-            accountId = account.accountId!!,
-            createdAt = LocalDateTime.now()
-        ))
-    }
+
+    
     @Transactional
-    fun create(createUserDto: CreateUserDto): User{
+    fun createAdminAndBot(createUserDto: CreateUserDto): User{
         val account = accountsRepository.save(Account(accountId = null, money = 1000000))
         return userRepository.save( User(
             userId = null,
@@ -37,9 +24,25 @@ class UserService (val userRepository: UserRepository,
             username = createUserDto.username,
             password = createUserDto.password,
             accountId = account.accountId!!,
+            userType = "일반유저",
             createdAt = LocalDateTime.now()
         ))
     }
+
+    @Transactional
+    fun createAdminAndBot(email: String, username:String, password:String, userType: String): User{
+        val account = accountsRepository.save(Account(accountId = null, money = 1000000))
+        return userRepository.save( User(
+            userId = null,
+            email = email,
+            username = username,
+            password = password,
+            accountId = account.accountId!!,
+            userType = userType,
+            createdAt = LocalDateTime.now()
+        ))
+    }
+
 
     fun update(userId: Long, updateUserDto: UpdateUserDto): User{
         val optionalUser = userRepository.findById(userId)
@@ -63,7 +66,11 @@ class UserService (val userRepository: UserRepository,
     }
 
     fun findUser(userId: Long): User? {
-        return userRepository.findById(userId).getOrNull()
+        val optionalUser = userRepository.findById(userId)
+        if(optionalUser.isEmpty)
+            return null
+
+        return optionalUser.get()
     }
 
     fun findUser(email: String, password: String): User? {
@@ -74,5 +81,9 @@ class UserService (val userRepository: UserRepository,
         // 계좌 내용도 같이 보여줘야 함
 
         return userList[0]
+    }
+    
+    fun findBotList(): List<User>{
+        return userRepository.findByUserType("봇")
     }
 }

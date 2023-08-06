@@ -6,4 +6,5 @@ data class Quote(
     val stocksId: Long,
     val stocksName: String,
     var amount: Int,
+    var type: String
 )

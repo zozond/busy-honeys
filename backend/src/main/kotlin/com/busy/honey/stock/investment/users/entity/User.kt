@@ -14,5 +14,6 @@ class User(
     var username: String,
     var password: String,
     var accountId: Long,
+    var userType: String,
     var createdAt: LocalDateTime
 )

@@ -1,4 +1,4 @@
-package com.busy.honey.stock.investment.stock
+package com.busy.honey.stock.investment.stock.repository
 
 import com.busy.honey.stock.investment.stock.entity.StockHistory
 import org.springframework.data.domain.Pageable

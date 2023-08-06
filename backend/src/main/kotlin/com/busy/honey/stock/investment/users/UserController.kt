@@ -1,24 +1,31 @@
 package com.busy.honey.stock.investment.users
 
+import com.busy.honey.stock.investment.accounts.AccountsService
 import com.busy.honey.stock.investment.response.RestApiResponse
+import com.busy.honey.stock.investment.stock.StockService
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/users")
-class UserController (private val userService: UserService){
+class UserController (private val userService: UserService,
+                      private val accountsService: AccountsService,
+                      private val stockService: StockService
+){
 
     @GetMapping("/{userId}")
     fun getUser(@PathVariable("userId") userId: Long): RestApiResponse{
         val user = this.userService.findUser(userId)
+        val userAccount = accountsService.findById(user!!.accountId)!!
+        val userOwnStockList = stockService.getUserOwnStocks(userId)
+
         val data = mutableMapOf<Any, Any>()
-        data["email"] = user!!.email
+        data["email"] = user.email
         data["userName"] = user.username
         data["totalEarningRate"] = 0.0
-        data["accountPrice"] = 0
-        data["stocksInfo"] = intArrayOf()
+        data["accountPrice"] = userAccount.money
+        data["stocksInfo"] = userOwnStockList
 
         return RestApiResponse(
             status = "OK",
@@ -29,7 +36,7 @@ class UserController (private val userService: UserService){
 
     @PostMapping
     fun createUser(@RequestBody createUserDto: CreateUserDto): RestApiResponse {
-        val user = this.userService.create(createUserDto)
+        val user = this.userService.createAdminAndBot(createUserDto)
         val data = mutableMapOf<Any, Any>()
         data["createdAt"] = user.createdAt.toString()
         data["email"] = user.email

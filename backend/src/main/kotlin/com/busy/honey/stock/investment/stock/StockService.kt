@@ -90,4 +90,40 @@ class StockService (val stockPriceRepository: StockPriceRepository){
             )
         )
     }
+
+    fun getUserOwnStocks(userId: Long): List<StockPrice>{
+        return stockPriceRepository.findByUserOwnAllStockPrice(userId)
+    }
+
+    fun lastBuyPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
+         val result = stockPriceRepository.findByLastPrice(
+            isConcluded = true,
+            stocksId = stocksId,
+            type = "buy",
+            from = from,
+            to = to,
+            limit = 1,
+            offset = 0
+        )
+        if (result.isEmpty()){
+            return 1000
+        }
+
+        return result[0].price
+    }
+    fun lastSellPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
+        val result = stockPriceRepository.findByLastPrice(
+            isConcluded = true,
+            stocksId = stocksId,
+            type = "sell",
+            from = from,
+            to = to,
+            limit = 1,
+            offset = 0
+        )
+        if (result.isEmpty()){
+            return 1000
+        }
+        return result[0].price
+    }
 }
