@@ -1,4 +1,4 @@
-package com.busy.honey.stock.investment.stock
+package com.busy.honey.stock.investment.stock.service
 
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StockHistoryService (val stockHistoryRepository: StockHistoryRepository){
+class StockHistoryService (private val stockHistoryRepository: StockHistoryRepository){
 
     fun getHistory(userId: Long, limit: Int, offset: Int): List<StockHistory>{
         return stockHistoryRepository.findByUserId(userId, PageRequest.of(offset, limit, Sort.by("timestamp").descending()))
     }
-
     fun addBuyStockHistory(buyStockDto: BuyStockDto){
         stockHistoryRepository.save(
             StockHistory(

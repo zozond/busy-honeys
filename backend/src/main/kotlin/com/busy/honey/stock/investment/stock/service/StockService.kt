@@ -1,16 +1,19 @@
-package com.busy.honey.stock.investment.stock
+package com.busy.honey.stock.investment.stock.service
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
 import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
 import com.busy.honey.stock.investment.stock.entity.StockPrice
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StockService (val stockPriceRepository: StockPriceRepository){
+class StockService (private val stockPriceRepository: StockPriceRepository,
+                    private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
+){
 
     @Transactional
     fun changeBuyingPrice(buyingPriceId: Long,
@@ -92,11 +95,11 @@ class StockService (val stockPriceRepository: StockPriceRepository){
     }
 
     fun getUserOwnStocks(userId: Long): List<StockPrice>{
-        return stockPriceRepository.findByUserOwnAllStockPrice(userId)
+        return jdslStockPriceRepository.findByUserOwnAllStockPrice(userId)
     }
 
     fun lastBuyPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
-         val result = stockPriceRepository.findByLastPrice(
+         val result = jdslStockPriceRepository.findByLastPrice(
             isConcluded = true,
             stocksId = stocksId,
             type = "buy",
@@ -112,7 +115,7 @@ class StockService (val stockPriceRepository: StockPriceRepository){
         return result[0].price
     }
     fun lastSellPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
-        val result = stockPriceRepository.findByLastPrice(
+        val result = jdslStockPriceRepository.findByLastPrice(
             isConcluded = true,
             stocksId = stocksId,
             type = "sell",
@@ -125,5 +128,21 @@ class StockService (val stockPriceRepository: StockPriceRepository){
             return 1000
         }
         return result[0].price
+    }
+
+    fun insertSampleData(stocksId: Long, timestamp: LocalDateTime, price:Int, amount: Int) {
+        stockPriceRepository.save(
+            StockPrice(
+                stocksId = stocksId,
+                price = price,
+                amount = amount,
+                timestamp = timestamp,
+                isConcluded = true,
+                type = "buy",
+                userId = 0,
+                stockPriceId = null
+            )
+        )
+
     }
 }

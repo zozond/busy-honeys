@@ -1,14 +1,13 @@
-package com.busy.honey.stock.investment.quote
+package com.busy.honey.stock.investment.quote.controller
 
+import com.busy.honey.stock.investment.quote.service.QuoteService
 import com.busy.honey.stock.investment.response.RestApiResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/quote")
-class QuoteController(val quoteService: QuoteService) {
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+class QuoteController(private val quoteService: QuoteService) {
     /**
      * 호가창을 보여줘야 함 Like 경매장 ?
      */
@@ -23,7 +22,6 @@ class QuoteController(val quoteService: QuoteService) {
             data = data
         )
     }
-
 
     @GetMapping
     fun getAllQuote(): RestApiResponse {

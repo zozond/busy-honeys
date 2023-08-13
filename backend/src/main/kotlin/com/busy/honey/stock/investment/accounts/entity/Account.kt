@@ -4,10 +4,10 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name="accounts")
-class Account (
+open class Account (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val accountId: Long?,
-    var money: Long
+    open val accountId: Long?,
+    open var money: Long
 ){
 }

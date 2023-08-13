@@ -1,14 +1,16 @@
-package com.busy.honey.stock.investment.users
+package com.busy.honey.stock.investment.users.controller
 
-import com.busy.honey.stock.investment.accounts.AccountsService
+import com.busy.honey.stock.investment.accounts.service.AccountsService
 import com.busy.honey.stock.investment.response.RestApiResponse
-import com.busy.honey.stock.investment.stock.StockService
+import com.busy.honey.stock.investment.stock.service.StockService
+import com.busy.honey.stock.investment.users.service.UserService
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class UserController (private val userService: UserService,
                       private val accountsService: AccountsService,
                       private val stockService: StockService
@@ -17,15 +19,16 @@ class UserController (private val userService: UserService,
     @GetMapping("/{userId}")
     fun getUser(@PathVariable("userId") userId: Long): RestApiResponse{
         val user = this.userService.findUser(userId)
-        val userAccount = accountsService.findById(user!!.accountId)!!
-        val userOwnStockList = stockService.getUserOwnStocks(userId)
-
         val data = mutableMapOf<Any, Any>()
-        data["email"] = user.email
-        data["userName"] = user.username
-        data["totalEarningRate"] = 0.0
-        data["accountPrice"] = userAccount.money
-        data["stocksInfo"] = userOwnStockList
+        if (user != null){
+            val userAccount = accountsService.findById(user.accountId)!!
+            val userOwnStockList = stockService.getUserOwnStocks(userId)
+            data["email"] = user.email
+            data["userName"] = user.username
+            data["totalEarningRate"] = 0.0
+            data["accountPrice"] = userAccount.money
+            data["stocksInfo"] = userOwnStockList
+        }
 
         return RestApiResponse(
             status = "OK",
@@ -36,7 +39,7 @@ class UserController (private val userService: UserService,
 
     @PostMapping
     fun createUser(@RequestBody createUserDto: CreateUserDto): RestApiResponse {
-        val user = this.userService.createAdminAndBot(createUserDto)
+        val user = this.userService.create(createUserDto)
         val data = mutableMapOf<Any, Any>()
         data["createdAt"] = user.createdAt.toString()
         data["email"] = user.email
@@ -54,11 +57,20 @@ class UserController (private val userService: UserService,
     @PutMapping("/{userId}")
     fun updateUserInfo(@PathVariable("userId") userId: Long,
                        @RequestBody updateUserDto: UpdateUserDto): RestApiResponse{
-        val user = this.userService.update(userId, updateUserDto)
+        val data = mutableMapOf<Any, Any>()
+        var status = "OK"
+        var description = "success"
+        try{
+            val user = this.userService.update(userId, updateUserDto)
+        }catch (e: Exception){
+            status = "ERROR"
+            description = e.localizedMessage
+        }
+
         return RestApiResponse(
-            status = "OK",
-            description = "success",
-            data = null
+            status = status,
+            description = description,
+            data = data
         )
     }
 

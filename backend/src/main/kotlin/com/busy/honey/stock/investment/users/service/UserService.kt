@@ -1,22 +1,25 @@
-package com.busy.honey.stock.investment.users
+package com.busy.honey.stock.investment.users.service
 
-import com.busy.honey.stock.investment.accounts.AccountsRepository
+import com.busy.honey.stock.investment.accounts.repository.AccountsRepository
 import com.busy.honey.stock.investment.accounts.entity.Account
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
 import com.busy.honey.stock.investment.users.entity.User
+import com.busy.honey.stock.investment.users.repository.JdslUserRepositoryImpl
 import com.busy.honey.stock.investment.users.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class UserService (val userRepository: UserRepository,
-                   val accountsRepository: AccountsRepository){
+class UserService (private val userRepository: UserRepository,
+                   private val jdslUserRepository: JdslUserRepositoryImpl,
+                   private val accountsRepository: AccountsRepository
+){
 
     
     @Transactional
-    fun createAdminAndBot(createUserDto: CreateUserDto): User{
+    fun create(createUserDto: CreateUserDto): User{
         val account = accountsRepository.save(Account(accountId = null, money = 1000000))
         return userRepository.save( User(
             userId = null,
@@ -24,7 +27,7 @@ class UserService (val userRepository: UserRepository,
             username = createUserDto.username,
             password = createUserDto.password,
             accountId = account.accountId!!,
-            userType = "일반유저",
+            userType = "normal",
             createdAt = LocalDateTime.now()
         ))
     }
@@ -46,6 +49,7 @@ class UserService (val userRepository: UserRepository,
 
     fun update(userId: Long, updateUserDto: UpdateUserDto): User{
         val optionalUser = userRepository.findById(userId)
+
         if(optionalUser.isEmpty){
             throw Exception("유저가 생성되지 않았는데 업데이트 한 경우 ")
         }
@@ -74,16 +78,15 @@ class UserService (val userRepository: UserRepository,
     }
 
     fun findUser(email: String, password: String): User? {
-        val userList = userRepository.findByEmailAndPassword(email, password)
+        val userList = jdslUserRepository.findByEmailAndPassword(email, password)
         if (userList.isEmpty()){
             return null
         }
         // 계좌 내용도 같이 보여줘야 함
-
         return userList[0]
     }
     
     fun findBotList(): List<User>{
-        return userRepository.findByUserType("봇")
+        return jdslUserRepository.findByUserType("봇")
     }
 }

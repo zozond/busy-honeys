@@ -1,4 +1,4 @@
-package com.busy.honey.stock.investment.accounts
+package com.busy.honey.stock.investment.accounts.repository
 
 import com.busy.honey.stock.investment.accounts.entity.Account
 import org.springframework.data.jpa.repository.JpaRepository

@@ -1,23 +1,20 @@
-package com.busy.honey.stock.investment.stock
+package com.busy.honey.stock.investment.stock.controller
 
 import com.busy.honey.stock.investment.response.RestApiResponse
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
 import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
-import jakarta.websocket.server.PathParam
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.busy.honey.stock.investment.stock.service.StockHistoryService
+import com.busy.honey.stock.investment.stock.service.StockService
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/stock")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class StockController (private val stockService: StockService,
-                       private val stockHistoryService: StockHistoryService){
+                       private val stockHistoryService: StockHistoryService
+){
 
     /**
      * 주식 주문 내역 확인

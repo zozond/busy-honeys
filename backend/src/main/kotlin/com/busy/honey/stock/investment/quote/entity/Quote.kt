@@ -1,4 +1,4 @@
-package com.busy.honey.stock.investment.quote
+package com.busy.honey.stock.investment.quote.entity
 
 data class Quote(
     var stockPriceId :Long,

@@ -5,15 +5,15 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name="stockPrice")
-class StockPrice(
+open class StockPrice(
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    var stockPriceId :Long?,
-    var userId: Long,
-    var price: Int,
-    val stocksId: Long,
-    var amount: Int,
-    var isConcluded: Boolean,
-    var type: String,
-    var timestamp: LocalDateTime
+    open var stockPriceId :Long?,
+    open var userId: Long,
+    open var price: Int,
+    open val stocksId: Long,
+    open var amount: Int,
+    open var isConcluded: Boolean,
+    open var type: String,
+    open var timestamp: LocalDateTime
 )

@@ -31,5 +31,26 @@ class Utils {
             val yyyymmdd = toDateString(now)
             return LocalDateTime.parse("$yyyymmdd 23:59:59", pattern)
         }
+
+        fun getStartDateTime(yyyymmdd: String): LocalDateTime {
+            return LocalDateTime.parse("$yyyymmdd 00:00:00", pattern)
+        }
+
+        fun getEndDateTime(yyyymmdd: String): LocalDateTime {
+            return LocalDateTime.parse("$yyyymmdd 23:59:59", pattern)
+        }
+
+        fun getOneMonthDateRange(): List<String>{
+            val result = mutableListOf<String>()
+
+            var monthAgo = LocalDateTime.now().minusMonths(1)
+
+            while(monthAgo.compareTo(LocalDateTime.now()) < 0){
+                result.add(toDateString(monthAgo))
+                monthAgo = monthAgo.plusDays(1)
+            }
+
+            return result
+        }
     }
 }

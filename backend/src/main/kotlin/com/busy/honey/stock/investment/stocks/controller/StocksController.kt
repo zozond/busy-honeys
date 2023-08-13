@@ -1,27 +1,35 @@
-package com.busy.honey.stock.investment.stocks
+package com.busy.honey.stock.investment.stocks.controller
 
 import com.busy.honey.stock.investment.response.RestApiResponse
+import com.busy.honey.stock.investment.stocks.service.StocksService
 import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
 import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/stocks")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class StocksController(private val stocksService: StocksService) {
 
     @GetMapping("/{stocksId}")
     fun getStocks(@PathVariable("stocksId") stocksId: Long): RestApiResponse {
-        val stocks = this.stocksService.getStocks(stocksId)
-
         val data = mutableMapOf<Any, Any>()
-        data["stocksName"] = stocks!!.stocksName
-        data["createdAt"] = stocks.createdAt.toString()
-        data["stockShares"] = 0
-        data["financialStatementsContent"] = stocks.financialStatementsContent
+        var status = "OK"
+        var description = "success"
+        try {
+            val stocks = this.stocksService.getStocks(stocksId)
+            data["stocksName"] = stocks!!.stocksName
+            data["createdAt"] = stocks.createdAt.toString()
+            data["stockShares"] = 0
+            data["financialStatementsContent"] = stocks.financialStatementsContent
+        }catch (e: Exception){
+            status = "ERROR"
+            description = e.localizedMessage
+        }
 
         return RestApiResponse(
-            status = "OK",
-            description = "success",
+            status = status,
+            description = description,
             data = data
         )
     }
@@ -46,16 +54,24 @@ class StocksController(private val stocksService: StocksService) {
         @PathVariable("stocksId") stocksId: Long,
         @RequestBody updateStocksDto: UpdateStocksDto
     ): RestApiResponse {
-        val stocks = this.stocksService.update(stocksId, updateStocksDto)
         val data = mutableMapOf<Any, Any>()
-        data["stocksName"] = stocks.stocksName
-        data["createdAt"] = stocks.createdAt.toString()
-        data["stockShares"] = stocks.stockShares
-        data["financialStatementsContent"] = stocks.financialStatementsContent
+        var status = "OK"
+        var description = "success"
+
+        try{
+            val stocks = this.stocksService.update(stocksId, updateStocksDto)
+            data["stocksName"] = stocks.stocksName
+            data["createdAt"] = stocks.createdAt.toString()
+            data["stockShares"] = stocks.stockShares
+            data["financialStatementsContent"] = stocks.financialStatementsContent
+        }catch (e: Exception){
+            status = "ERROR"
+            description = e.localizedMessage
+        }
 
         return RestApiResponse(
-            status = "OK",
-            description = "success",
+            status = status,
+            description = description,
             data = data
         )
     }

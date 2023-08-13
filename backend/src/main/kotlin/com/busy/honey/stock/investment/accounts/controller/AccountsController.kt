@@ -1,15 +1,14 @@
-package com.busy.honey.stock.investment.accounts
+package com.busy.honey.stock.investment.accounts.controller
 
 import com.busy.honey.stock.investment.accounts.dto.DepositDto
+import com.busy.honey.stock.investment.accounts.service.AccountsService
 import com.busy.honey.stock.investment.response.RestApiResponse
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/account")
-class AccountsController (val accountsService: AccountsService){
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+class AccountsController (private val accountsService: AccountsService){
 
     @PostMapping
     fun deposit(@RequestBody depositDto: DepositDto): RestApiResponse {

@@ -1,12 +1,13 @@
 package com.busy.honey.stock.investment.users.entity
 
+
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
 @Entity
 @Table(name="users")
-class User(
+data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     var userId: Long?,

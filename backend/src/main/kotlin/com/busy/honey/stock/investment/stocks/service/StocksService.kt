@@ -1,18 +1,18 @@
-package com.busy.honey.stock.investment.stocks
+package com.busy.honey.stock.investment.stocks.service
 
-import com.busy.honey.stock.investment.stock.StockService
-import com.busy.honey.stock.investment.stock.entity.StockPrice
+import com.busy.honey.stock.investment.stock.service.StockService
 import com.busy.honey.stock.investment.stocks.dto.CreateStocksDto
 import com.busy.honey.stock.investment.stocks.dto.UpdateStocksDto
 import com.busy.honey.stock.investment.stocks.entity.Stocks
-import jakarta.annotation.PostConstruct
+import com.busy.honey.stock.investment.stocks.repository.StocksRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class StocksService(private val stocksRepository: StocksRepository,
-                    private val stockService: StockService) {
+                    private val stockService: StockService
+) {
 
     fun create(createStocksDto: CreateStocksDto): Stocks {
         val stocks = stocksRepository.save(Stocks(
@@ -37,6 +37,7 @@ class StocksService(private val stocksRepository: StocksRepository,
         if (optionalStocks.isEmpty){
             throw Exception("생성되지 않은 종목을 업데이트 하려고 함")
         }
+
         val stocks = optionalStocks.get()
         stocks.stocksName = updateStocksDto.stocksName
         stocks.financialStatementsContent = updateStocksDto.financialStatementsContent
@@ -48,7 +49,12 @@ class StocksService(private val stocksRepository: StocksRepository,
     }
 
     fun getStocks(stocksId: Long): Stocks? {
-        return stocksRepository.findById(stocksId).get()
+        val optionalStocks = stocksRepository.findById(stocksId)
+        if (optionalStocks.isEmpty){
+            throw Exception("종목이 없습니다.")
+        }
+
+        return optionalStocks.get()
     }
 
 

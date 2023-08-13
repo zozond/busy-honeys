@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StockHistoryRepository : JpaRepository<StockHistory, Long>{
-
     fun findByUserId(userId:Long,  pageable: Pageable): List<StockHistory>
 }

@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot") version "3.1.2"
-//	id("org.springframework.boot") version "2.7.14"
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
@@ -37,8 +36,6 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-devtools")
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
-	implementation("org.springframework.boot:spring-boot-starter-websocket:3.1.2")
 
 	// https://mvnrepository.com/artifact/com.h2database/h2
 	implementation("com.h2database:h2:2.2.220")

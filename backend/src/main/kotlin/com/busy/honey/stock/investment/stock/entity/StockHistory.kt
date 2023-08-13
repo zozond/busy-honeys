@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name="stockHistory")
-class StockHistory(
+data class StockHistory(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val stockHistoryId: Long?,

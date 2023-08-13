@@ -1,14 +1,13 @@
-package com.busy.honey.stock.investment.auth
+package com.busy.honey.stock.investment.auth.controller
 
 import com.busy.honey.stock.investment.auth.dto.LoginDto
+import com.busy.honey.stock.investment.auth.service.AuthService
 import com.busy.honey.stock.investment.response.RestApiResponse
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/login")
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class LoginController (private val authService: AuthService){
 
     @PostMapping

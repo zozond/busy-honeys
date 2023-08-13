@@ -1,14 +1,14 @@
-package com.busy.honey.stock.investment.chart
+package com.busy.honey.stock.investment.chart.service
 
 import com.busy.honey.stock.investment.chart.dto.ChartDto
-import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
 import com.busy.honey.stock.investment.utils.Utils
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Service
-class ChartService (val stockPriceRepository: StockPriceRepository){
+class ChartService (val jdslStockPriceRepository: JdslStockPriceRepositoryImpl){
 
     private fun toLocalDateTime(date: String): LocalDateTime {
         return LocalDateTime.parse("$date 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
@@ -27,19 +27,19 @@ class ChartService (val stockPriceRepository: StockPriceRepository){
             val endDate = LocalDateTime.parse(chartDto.from + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
             // 종가
-            val closeStockPrice = stockPriceRepository.findStockPriceOrderByTimestampDesc(stocksId, true, startDate, endDate, 0, 1)
+            val closeStockPrice = jdslStockPriceRepository.findStockPriceOrderByTimestampDesc(stocksId, true, startDate, endDate, 0, 1)
 
             // 시가
-            val openStockPrice = stockPriceRepository.findStockPriceOrderByTimestampAsc(stocksId,true, startDate, endDate, 0, 1)
+            val openStockPrice = jdslStockPriceRepository.findStockPriceOrderByTimestampAsc(stocksId,true, startDate, endDate, 0, 1)
 
             // 최고가
-            val highStockPrice = stockPriceRepository.findStockPriceOrderByPriceDesc(stocksId,true, startDate, endDate, 0,1)
+            val highStockPrice = jdslStockPriceRepository.findStockPriceOrderByPriceDesc(stocksId,true, startDate, endDate, 0,1)
 
             // 최저가
-            val lowStockPrice = stockPriceRepository.findStockPriceOrderByPriceAsc(stocksId,true,  startDate, endDate, 0,1)
+            val lowStockPrice = jdslStockPriceRepository.findStockPriceOrderByPriceAsc(stocksId,true,  startDate, endDate, 0,1)
 
             // 체결된 거래량
-            val volume = stockPriceRepository.countConcludedTrade(stocksId, startDate, endDate)
+            val volume = jdslStockPriceRepository.countConcludedTrade(stocksId, startDate, endDate)
 
             if (closeStockPrice.isEmpty() || openStockPrice.isEmpty() || highStockPrice.isEmpty() || lowStockPrice.isEmpty()){
                 break

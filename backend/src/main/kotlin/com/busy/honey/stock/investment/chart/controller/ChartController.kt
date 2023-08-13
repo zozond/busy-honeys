@@ -1,17 +1,14 @@
-package com.busy.honey.stock.investment.chart
+package com.busy.honey.stock.investment.chart.controller
 
 import com.busy.honey.stock.investment.chart.dto.ChartDto
+import com.busy.honey.stock.investment.chart.service.ChartService
 import com.busy.honey.stock.investment.response.RestApiResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/chart")
-class ChartController (val chartService: ChartService)
-{
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
+class ChartController (private val chartService: ChartService) {
 
     @GetMapping("/{stocksId}")
     fun getChart(@PathVariable("stocksId") stocksId: Long,

@@ -1,11 +1,11 @@
-package com.busy.honey.stock.investment.auth
+package com.busy.honey.stock.investment.auth.service
 
 import com.busy.honey.stock.investment.auth.dto.LoginDto
-import com.busy.honey.stock.investment.users.UserService
+import com.busy.honey.stock.investment.users.service.UserService
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService (val userService: UserService){
+class AuthService (private val userService: UserService){
 
 
     fun login(loginDto: LoginDto): Boolean{

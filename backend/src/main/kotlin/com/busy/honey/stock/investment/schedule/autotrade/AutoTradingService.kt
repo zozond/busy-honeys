@@ -1,10 +1,10 @@
 package com.busy.honey.stock.investment.schedule.autotrade
 
-import com.busy.honey.stock.investment.stock.StockService
+import com.busy.honey.stock.investment.stock.service.StockService
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
-import com.busy.honey.stock.investment.stocks.StocksService
-import com.busy.honey.stock.investment.users.UserService
+import com.busy.honey.stock.investment.stocks.service.StocksService
+import com.busy.honey.stock.investment.users.service.UserService
 import com.busy.honey.stock.investment.utils.Utils
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -12,9 +12,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom
 
 @Service
-class AutoTradingService (val userService: UserService,
-                          val stocksService: StocksService,
-                          val stockService: StockService){
+class AutoTradingService (private val userService: UserService,
+                          private val stocksService: StocksService,
+                          private val stockService: StockService
+){
 
     val randomStocks = SecureRandom()
     val randomActions = SecureRandom()
@@ -41,6 +42,7 @@ class AutoTradingService (val userService: UserService,
             val value = randomActions.nextInt(10000)
             val sumPrice = randomPriceValue.nextInt(50)
             val stocks = stocksList.get(randomStocksIndex)
+
             // 3. 마지막 매수, 매도 값 확인
             val lastBuyPrice = stockService.lastBuyPrice(stocksId = stocks.stocksId!!, from=from, to=to)
             val lastSellPrice = stockService.lastSellPrice(stocksId = stocks.stocksId!!, from=from, to=to)
