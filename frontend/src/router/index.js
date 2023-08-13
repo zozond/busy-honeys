@@ -1,29 +1,46 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TraidingView from '../views/TraidingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    //라이브러리 테스트
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: TraidingView
     },
     {
-      path: '/traiding',
-      name: 'traiding',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/TraidingView.vue')
+      path: '/D3chart',
+      name: 'D3chart',
+      component: () => import('../views/D3chart.vue')
     },
     {
       path: '/apex',
       name: 'apex',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Apexchart.vue')
+    },
+
+    //여기서부터가 진짜
+    {
+      path: '/stock',
+      name: 'stock',
+      component: () => import('../views/StockView.vue')
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import('../views/AccountView.vue')
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: () => import('../views/SettingView.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
     },
   ]
 })

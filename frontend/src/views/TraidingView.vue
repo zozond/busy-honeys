@@ -1,3 +1,26 @@
+<template>
+	<div class="containRoute">
+		<div class="chartBox">
+			<h1>TraidingView 테스트</h1>
+			<div class="chart-container">
+				<LWChart
+				:type="chartType"
+				:data="data"
+				:autosize="true"
+				:chart-options="chartOptions"
+				:series-options="seriesOptions"
+				ref="lwChart"
+			/>
+			</div>
+			<button type="button" @click="changeColors">Set Random Colors</button>
+			<button type="button" @click="changeType">Change Chart Type</button>
+			<button type="button" @click="changeData">Change Data</button>
+		</div>
+
+		<SummaryComp />
+	</div>
+</template>
+
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
@@ -14,6 +37,7 @@ import {
  * Select your preferred style from the imports below:
  */
 import LWChart from '../components/composition-api/LWChart.vue';
+import SummaryComp from '../components/SummaryComp.vue';
 // import LWChart from './components/composition-api/LWChart.vue';
 function generateSampleData(ohlc) {
 	const randomFactor = 25 + Math.random() * 25;
@@ -154,25 +178,8 @@ const changeType = () => {
 };
 </script>
 
-<template>
-	<div class="containRoute">
-		<h1>TraidingView 테스트</h1>
-		<div class="chart-container">
-			<LWChart
-			:type="chartType"
-			:data="data"
-			:autosize="true"
-			:chart-options="chartOptions"
-			:series-options="seriesOptions"
-			ref="lwChart"
-		/>
-		</div>
-		<button type="button" @click="changeColors">Set Random Colors</button>
-		<button type="button" @click="changeType">Change Chart Type</button>
-		<button type="button" @click="changeData">Change Data</button>
-	</div>
-</template>
-<style scoped>
+
+<style lang="scss" scoped>
 .chart-container {
 	height: 300px;
 }
