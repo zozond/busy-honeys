@@ -58,6 +58,9 @@
   font-weight: normal;
 }
 
+/* reset */
+
+html {line-height: 1.2; -webkit-text-size-adjust: 100%;}
 body {
   min-height: 100vh;
   color: var(--color-text);
@@ -71,3 +74,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+main {display: block;}
+* {box-sizing: border-box;}
+h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, p, table, blockquote, pre, code {margin: 0; padding: 0;}
+h1, h2, h3, h4, h5, h6 {font-weight: 700;}
+a {color: inherit; text-decoration: inherit; background-color: transparent;}
+img {vertical-align: middle; max-width: 100%; border-style: none;}
+li {list-style: none;}
+address, em, i, cite {font-style: normal;}
+table {border-collapse: collapse;}
+table caption {overflow: hidden; width: 1px; height: 1px; margin-top: -1px;}
+i[class^="fa"] {position: relative; display: inline-block; vertical-align: middle;}
+i[class^="fa"] span {position: absolute; left: -9999px;}
+.ir-hidden {position: absolute !important; left: -9999px !important;}
