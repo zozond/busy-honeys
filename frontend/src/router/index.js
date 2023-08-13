@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TraidingView from '../views/TraidingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,21 +6,9 @@ const router = createRouter({
     //라이브러리 테스트
     {
       path: '/',
-      name: 'home',
-      component: TraidingView
-    },
-    {
-      path: '/D3chart',
-      name: 'D3chart',
-      component: () => import('../views/D3chart.vue')
-    },
-    {
-      path: '/apex',
       name: 'apex',
       component: () => import('../views/Apexchart.vue')
     },
-
-    //여기서부터가 진짜
     {
       path: '/stock',
       name: 'stock',
@@ -43,6 +30,6 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
   ]
-})
+});
 
-export default router
+export default router;

@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { 
+import {
   ref,
   onMounted,
   onUpdated,
@@ -21,7 +21,6 @@ import {
   reactive,
 } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
-
 
 </script>
 
