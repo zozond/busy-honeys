@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios';
 
-export const tComp_stockStore = defineStore('stock', () => {
+export const stock = defineStore('stock', () => {
     const adressJson = ref();
     const apiUrl = `http://localhost:8080/quote`;
     axios.get(apiUrl);

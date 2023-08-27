@@ -18,17 +18,17 @@
                 </table>
             </div>
             <OrderComp />
-            <div>
-                일단 여기다가
-                {{ store }}
-            </div>
+        </div>
+        <div class="stock">
+            일단 여기다가
+            <pre>{{ store.adressJson.data.data.currentList }}</pre>
         </div>
     </div>
 </template>
 
 <script setup>
 import OrderComp from './../components/OrderComp.vue'
-import { stock } from "@/store/stock.js";
+import { stock } from "@/stores/stock.js";
 import { storeToRefs } from "pinia";
 import { 
   ref,
@@ -95,7 +95,7 @@ var options = {
     }
 }
 
-const store = useStore();
+const store = stock();
 
 onMounted(() => {
     var chart = new ApexCharts(document.getElementById("chart"), options);
@@ -125,4 +125,8 @@ watch(() => {
     background-color: #fff;
 }
 
+
+.stock {
+    width: 100%;
+}
 </style>
