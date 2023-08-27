@@ -1,4 +1,5 @@
 package com.busy.honey.stock.investment.stock.service
+import com.busy.honey.stock.investment.quote.service.QuoteService
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
@@ -6,13 +7,16 @@ import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
 import com.busy.honey.stock.investment.stock.entity.StockPrice
 import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
+import com.busy.honey.stock.investment.stocks.entity.Stocks
+import com.busy.honey.stock.investment.stocks.service.StocksService
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StockService (private val stockPriceRepository: StockPriceRepository,
-                    private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
+class StockService (
+    private val stockPriceRepository: StockPriceRepository,
+    private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
 ){
 
     @Transactional
@@ -96,6 +100,31 @@ class StockService (private val stockPriceRepository: StockPriceRepository,
 
     fun getUserOwnStocks(userId: Long): List<StockPrice>{
         return jdslStockPriceRepository.findByUserOwnAllStockPrice(userId)
+    }
+
+    fun calculateEarningRate(userId: Long): Double {
+        var allConcludedPrice = 0.0
+        var allCurrentPrice = 0.0
+
+        // 체결된 전체 주식 매수 데이터 조회
+        val list = jdslStockPriceRepository.findByUserOwnAllStockPrice(userId, true, "buy")
+
+        // 순회
+        for (item in list){
+            // 체결된 값
+            allConcludedPrice += item.price
+
+            // 체결된 값 / 현재 값 = 수익률
+            val recentPrices = jdslStockPriceRepository.findByRecentConcluded(item.stocksId, true, 1)
+
+            // 현재 값
+            allCurrentPrice += recentPrices[0].price
+        }
+        if (allConcludedPrice == 0.0 && allCurrentPrice == 0.0){
+            return 0.0
+        }else{
+            return ((allConcludedPrice / allCurrentPrice) * 100)
+        }
     }
 
     fun lastBuyPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
