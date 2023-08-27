@@ -1,7 +1,8 @@
 <template>
     <div class="containRoute">
-        <h1>Apexchart 로 확정!!!!</h1>
-        <div id="chart"></div>
+        <h1>요약정보</h1>
+        <Summary />
+        <Notice />
     </div>
 </template>
   
@@ -18,8 +19,8 @@ import {
 	reactive,
 } from 'vue';
 
-import ApexCharts from 'apexcharts';
-
+import Summary from './Summary.vue'
+import Notice from './Notice.vue'
 
 
 

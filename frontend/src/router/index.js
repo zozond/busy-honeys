@@ -6,8 +6,8 @@ const router = createRouter({
     //라이브러리 테스트
     {
       path: '/',
-      name: 'apex',
-      component: () => import('../views/Apexchart.vue')
+      name: 'home',
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/stock',

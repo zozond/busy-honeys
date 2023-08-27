@@ -1,13 +1,15 @@
 <template>
   <main>
     <router-link to="/">Home</router-link>
-    <router-link to="/stock">주식주문</router-link>
-    <router-link to="/account">자산현황</router-link>
+    <router-link v-if="!isLogin" to="/login">주식주문</router-link>
+    <router-link v-if="isLogin" to="/stock">주식주문</router-link>
+    <router-link v-if="!isLogin" to="/login">자산현황</router-link>
+    <router-link v-if="isLogin" to="/account">자산현황</router-link>
     <router-link to="/setting">환경설정</router-link>
 
+    <router-link v-if="isLogin" to="/info">유저정보</router-link>
     <router-link v-if="!isLogin" to="/login">로그인</router-link>
     <router-link v-else @click="logout()" to="/">로그아웃</router-link>
-    <router-link v-if="isLogin" to="/info">유저정보</router-link>
 
     <router-view></router-view>
   </main>
@@ -32,16 +34,16 @@ import { RouterLink, RouterView } from "vue-router";
 const isLogin = ref(false);
 
 onMounted(() => {
-  let user = sessionStorage.getItem("user");
-  if (user) {
-    isLogin.value = true;
-  }
+    let user = sessionStorage.getItem("user");
+    if (user) {
+        isLogin.value = true;
+    }
 });
 
 const logout = () => {
-  sessionStorage.removeItem("user");
-  sessionStorage.removeItem("userId");
-  location.reload();
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("userId");
+    location.reload();
 };
 </script>
 

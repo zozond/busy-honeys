@@ -29,7 +29,7 @@
             <h2>체결/미체결</h2>
         </div>
     </div>
-  </template>
+</template>
   
 <script setup>
   import { 

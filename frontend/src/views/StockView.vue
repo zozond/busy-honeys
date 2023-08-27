@@ -15,16 +15,21 @@
                         <td>흐ㅡ음...</td>
                         <td>흐으으으음</td>
                     </tr>
-
                 </table>
             </div>
             <OrderComp />
+            <div>
+                일단 여기다가
+                {{ store }}
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import OrderComp from './../components/OrderComp.vue'
+import { stock } from "@/store/stock.js";
+import { storeToRefs } from "pinia";
 import { 
   ref,
   onMounted,
@@ -90,11 +95,14 @@ var options = {
     }
 }
 
+const store = useStore();
 
 onMounted(() => {
     var chart = new ApexCharts(document.getElementById("chart"), options);
 
     chart.render();
+
+    
 });
 
 watch(() => {
