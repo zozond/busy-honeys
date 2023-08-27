@@ -2,7 +2,10 @@ package com.busy.honey.stock.investment.users.controller
 
 import com.busy.honey.stock.investment.accounts.service.AccountsService
 import com.busy.honey.stock.investment.response.RestApiResponse
+import com.busy.honey.stock.investment.stock.entity.StockPrice
 import com.busy.honey.stock.investment.stock.service.StockService
+import com.busy.honey.stock.investment.stocks.entity.Stocks
+import com.busy.honey.stock.investment.stocks.service.StocksService
 import com.busy.honey.stock.investment.users.service.UserService
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
@@ -13,7 +16,8 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class UserController (private val userService: UserService,
                       private val accountsService: AccountsService,
-                      private val stockService: StockService
+                      private val stockService: StockService,
+                      private val stocksService: StocksService
 ){
 
     @GetMapping("/{userId}")
@@ -22,10 +26,10 @@ class UserController (private val userService: UserService,
         val data = mutableMapOf<Any, Any>()
         if (user != null){
             val userAccount = accountsService.findById(user.accountId)!!
-            val userOwnStockList = stockService.getUserOwnStocks(userId)
+            val userOwnStockList = getStocksList(stockService.getUserOwnStocks(userId))
             data["email"] = user.email
             data["userName"] = user.username
-            data["totalEarningRate"] = 0.0
+            data["totalEarningRate"] = stockService.calculateEarningRate(userId)
             data["accountPrice"] = userAccount.money
             data["stocksInfo"] = userOwnStockList
         }
@@ -35,6 +39,18 @@ class UserController (private val userService: UserService,
             description = "success",
             data = data
         )
+    }
+
+    private fun getStocksList(stocksList: List<StockPrice>): List<Stocks>{
+        val result = mutableListOf<Stocks>()
+        println(stocksList.size)
+        for (item in stocksList){
+            val stocks = stocksService.getStocks(item.stocksId)
+            if(stocks != null){
+                result.add(stocks)
+            }
+        }
+        return result
     }
 
     @PostMapping

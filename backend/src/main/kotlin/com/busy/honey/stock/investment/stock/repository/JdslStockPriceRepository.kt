@@ -63,6 +63,8 @@ interface JdslStockPriceRepository {
 
     fun findByUserOwnAllStockPrice(userId: Long): List<StockPrice>
 
+    fun findByUserOwnAllStockPrice(userId: Long, isConcluded: Boolean, type: String): List<StockPrice>
+
     fun findByIsConcludedNotToday(isConcluded: Boolean, today: LocalDateTime): List<StockPrice>
 
     fun findByLastPrice(
@@ -75,5 +77,14 @@ interface JdslStockPriceRepository {
         limit: Int
     ): List<StockPrice>
 
+    fun findByLastPrice(
+        isConcluded: Boolean,
+        stocksId: Long,
+        type: String,
+        limit: Int
+    ): List<StockPrice>
+
     fun findByIsConcludedBot(isConcluded: Boolean, today: LocalDateTime): List<StockPrice>
+
+    fun findByRecentConcluded( stocksId: Long, isConcluded: Boolean, limit: Int): List<StockPrice>
 }

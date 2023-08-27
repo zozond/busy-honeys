@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/quote")
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class QuoteController(private val quoteService: QuoteService) {
-    /**
-     * 호가창을 보여줘야 함 Like 경매장 ?
-     */
 
     @GetMapping("/{stocksId}")
     fun getQuote(@PathVariable stocksId: Long): RestApiResponse {

@@ -26,6 +26,11 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
 	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
 	// https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")

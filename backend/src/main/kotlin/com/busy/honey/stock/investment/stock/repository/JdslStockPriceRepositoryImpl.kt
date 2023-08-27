@@ -198,6 +198,19 @@ class JdslStockPriceRepositoryImpl(
         return result
     }
 
+    override fun findByUserOwnAllStockPrice(userId: Long, isConcluded: Boolean, type: String): List<StockPrice> {
+        val result: List<StockPrice> = queryFactory.listQuery {
+            select(entity(StockPrice::class))
+            from(entity(StockPrice::class))
+            whereAnd(
+                column(StockPrice::userId).equal(userId),
+                column(StockPrice::isConcluded).equal(isConcluded),
+                column(StockPrice::type).equal(type)
+            )
+        }
+        return result
+    }
+
     override fun findByIsConcludedNotToday(isConcluded: Boolean, today: LocalDateTime): List<StockPrice> {
         return queryFactory.listQuery {
             select(entity(StockPrice::class))
@@ -243,6 +256,38 @@ class JdslStockPriceRepositoryImpl(
                 column(StockPrice::timestamp).lessThanOrEqualTo(today),
                 column(StockPrice::type).equal("bot")
             )
+        }
+    }
+
+    override fun findByRecentConcluded( stocksId: Long, isConcluded: Boolean, limit: Int): List<StockPrice> {
+        return queryFactory.listQuery {
+            select(entity(StockPrice::class))
+            from(entity(StockPrice::class))
+            whereAnd(
+                column(StockPrice::stocksId).equal(stocksId),
+                column(StockPrice::isConcluded).equal(isConcluded),
+            )
+            limit(limit)
+            orderBy(column(StockPrice::timestamp).desc())
+        }
+    }
+
+
+    override fun findByLastPrice(
+        isConcluded: Boolean,
+        stocksId: Long,
+        type: String,
+        limit: Int
+    ): List<StockPrice> {
+        return queryFactory.listQuery {
+            select(entity(StockPrice::class))
+            from(entity(StockPrice::class))
+            whereAnd(
+                column(StockPrice::stocksId).equal(stocksId),
+                column(StockPrice::isConcluded).equal(isConcluded),
+                column(StockPrice::type).equal(type),
+            )
+            limit(limit)
         }
     }
 }
