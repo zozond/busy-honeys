@@ -25,17 +25,32 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <style lang="scss">
-	main {
+    main {
 		> a {margin-right: 20px; font-size: 18px;}
 
 		div.containRoute {margin: 20px 0; padding: 8px 12px; border-radius: 12px; border: 1px solid #eee; min-height: 300px;}
-	}
+    }
 
-  .contain {
-    margin: 50px 0;
-    padding: 20px 0;
-    background: #ebebeb;
-  }
+    .contain {
+		margin: 50px 0;
+		padding: 20px 0;
+		background: #ebebeb;
+    }
+
+	.flexContain {
+		display: flex;
+		flex-wrap: wrap;
+  		gap: 20px;
+		
+		.half:first-child {
+			flex: 0.4;
+
+		}
+		.half:last-child {
+			flex: 0.6;
+
+		}
+	}
 
 
 
