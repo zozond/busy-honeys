@@ -87,6 +87,6 @@ class UserService (private val userRepository: UserRepository,
     }
     
     fun findBotList(): List<User>{
-        return jdslUserRepository.findByUserType("봇")
+        return jdslUserRepository.findByUserType("bot")
     }
 }

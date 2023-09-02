@@ -3,7 +3,9 @@ package com.busy.honey.stock.investment.users.controller
 import com.busy.honey.stock.investment.accounts.service.AccountsService
 import com.busy.honey.stock.investment.response.RestApiResponse
 import com.busy.honey.stock.investment.stock.entity.StockPrice
+import com.busy.honey.stock.investment.stock.entity.UserStock
 import com.busy.honey.stock.investment.stock.service.StockService
+import com.busy.honey.stock.investment.stock.service.UserStockService
 import com.busy.honey.stock.investment.stocks.entity.Stocks
 import com.busy.honey.stock.investment.stocks.service.StocksService
 import com.busy.honey.stock.investment.users.service.UserService
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 class UserController (private val userService: UserService,
                       private val accountsService: AccountsService,
                       private val stockService: StockService,
-                      private val stocksService: StocksService
+                      private val stocksService: StocksService,
 ){
 
     @GetMapping("/{userId}")
@@ -25,8 +27,9 @@ class UserController (private val userService: UserService,
         val user = this.userService.findUser(userId)
         val data = mutableMapOf<Any, Any>()
         if (user != null){
+            val a = stockService.getUserOwnStocks(userId)
             val userAccount = accountsService.findById(user.accountId)!!
-            val userOwnStockList = getStocksList(stockService.getUserOwnStocks(userId))
+            val userOwnStockList = getStocksList(a)
             data["email"] = user.email
             data["userName"] = user.username
             data["totalEarningRate"] = stockService.calculateEarningRate(userId)
@@ -41,9 +44,8 @@ class UserController (private val userService: UserService,
         )
     }
 
-    private fun getStocksList(stocksList: List<StockPrice>): List<Stocks>{
-        val result = mutableListOf<Stocks>()
-        println(stocksList.size)
+    private fun getStocksList(stocksList: List<UserStock>): Set<Stocks>{
+        val result = mutableSetOf<Stocks>()
         for (item in stocksList){
             val stocks = stocksService.getStocks(item.stocksId)
             if(stocks != null){

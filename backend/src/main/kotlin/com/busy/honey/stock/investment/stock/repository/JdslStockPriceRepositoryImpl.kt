@@ -192,7 +192,9 @@ class JdslStockPriceRepositoryImpl(
             select(entity(StockPrice::class))
             from(entity(StockPrice::class))
             whereAnd(
-                column(StockPrice::userId).equal(userId)
+                column(StockPrice::userId).equal(userId),
+                column(StockPrice::isConcluded).equal(true),
+                column(StockPrice::type).equal("buy"),
             )
         }
         return result
@@ -259,7 +261,7 @@ class JdslStockPriceRepositoryImpl(
         }
     }
 
-    override fun findByRecentConcluded( stocksId: Long, isConcluded: Boolean, limit: Int): List<StockPrice> {
+    override fun findByRecentConcluded(stocksId: Long, isConcluded: Boolean, limit: Int): List<StockPrice> {
         return queryFactory.listQuery {
             select(entity(StockPrice::class))
             from(entity(StockPrice::class))

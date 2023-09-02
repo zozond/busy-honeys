@@ -1,30 +1,33 @@
 package com.busy.honey.stock.investment.stock.service
-import com.busy.honey.stock.investment.quote.service.QuoteService
+
 import com.busy.honey.stock.investment.stock.dto.BuyStockDto
 import com.busy.honey.stock.investment.stock.dto.BuyingPriceDto
 import com.busy.honey.stock.investment.stock.dto.SellStockDto
 import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
 import com.busy.honey.stock.investment.stock.entity.StockPrice
+import com.busy.honey.stock.investment.stock.entity.UserStock
 import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
-import com.busy.honey.stock.investment.stocks.entity.Stocks
-import com.busy.honey.stock.investment.stocks.service.StocksService
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 
 @Service
-class StockService (
+class StockService(
     private val stockPriceRepository: StockPriceRepository,
+    private val userStockService: UserStockService,
     private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
-){
+) {
 
     @Transactional
-    fun changeBuyingPrice(buyingPriceId: Long,
-                           buyingPriceDto: BuyingPriceDto
-    ): StockPrice{
+    fun changeBuyingPrice(
+        buyingPriceId: Long,
+        buyingPriceDto: BuyingPriceDto
+    ): StockPrice {
         val optionalBuyingPrice = stockPriceRepository.findById(buyingPriceId)
-        if (optionalBuyingPrice.isEmpty){
+        if (optionalBuyingPrice.isEmpty) {
             throw Exception("Not Updated Your Asking Price")
         }
 
@@ -36,11 +39,12 @@ class StockService (
     }
 
     @Transactional
-    fun changeSellingPrice(sellingPriceId: Long,
-                           sellingPriceDto: SellingPriceDto
-    ): StockPrice{
+    fun changeSellingPrice(
+        sellingPriceId: Long,
+        sellingPriceDto: SellingPriceDto
+    ): StockPrice {
         val optionalSellingPrice = stockPriceRepository.findById(sellingPriceId)
-        if (optionalSellingPrice.isEmpty){
+        if (optionalSellingPrice.isEmpty) {
             throw Exception("Not Updated Your Asking Price")
         }
 
@@ -53,7 +57,7 @@ class StockService (
     }
 
 
-    fun buyStock(buyStockDto: BuyStockDto){
+    fun buyStock(buyStockDto: BuyStockDto) {
         stockPriceRepository.save(
             StockPrice(
                 stocksId = buyStockDto.stocksId,
@@ -68,22 +72,25 @@ class StockService (
         )
     }
 
-    fun sellStock(sellStockDto: SellStockDto){
-        stockPriceRepository.save(
-            StockPrice(
-                stocksId = sellStockDto.stocksId,
-                price = sellStockDto.askPrice,
-                amount = sellStockDto.stockAmount,
-                timestamp = LocalDateTime.now(),
-                isConcluded = false,
-                type = "sell",
-                userId = sellStockDto.userId,
-                stockPriceId = null
+    fun sellStock(sellStockDto: SellStockDto) {
+        if (userStockService.haveStock(userId = sellStockDto.userId, stocksId = sellStockDto.stocksId)) {
+            stockPriceRepository.save(
+                StockPrice(
+                    stocksId = sellStockDto.stocksId,
+                    price = sellStockDto.askPrice,
+                    amount = sellStockDto.stockAmount,
+                    timestamp = LocalDateTime.now(),
+                    isConcluded = false,
+                    type = "sell",
+                    userId = sellStockDto.userId,
+                    stockPriceId = null
+                )
             )
-        )
+        }
+
     }
 
-    fun initStocks(stocksId: Long, price: Int, amount: Int, userId: Long){
+    fun initStocks(stocksId: Long, price: Int, amount: Int, userId: Long) {
         stockPriceRepository.save(
             StockPrice(
                 stocksId = stocksId,
@@ -98,37 +105,47 @@ class StockService (
         )
     }
 
-    fun getUserOwnStocks(userId: Long): List<StockPrice>{
-        return jdslStockPriceRepository.findByUserOwnAllStockPrice(userId)
+    fun getUserOwnStocks(userId: Long): List<UserStock> {
+        return userStockService.getStockList(userId)
+//        return jdslStockPriceRepository.findByUserOwnAllStockPrice(userId)
     }
 
-    fun calculateEarningRate(userId: Long): Double {
-        var allConcludedPrice = 0.0
-        var allCurrentPrice = 0.0
+    fun calculateEarningRate(userId: Long): String {
+        var totalPrice = 0.0
+        var totalCurrentPrice = 0.0
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.HALF_UP
 
-        // 체결된 전체 주식 매수 데이터 조회
-        val list = jdslStockPriceRepository.findByUserOwnAllStockPrice(userId, true, "buy")
-
+        // 보유 전체 주식 리스트 가져오기
+        val list = userStockService.getStockList(userId)
+        println(list.size)
         // 순회
-        for (item in list){
-            // 체결된 값
-            allConcludedPrice += item.price
+        for (item in list) {
+            // 매수한 주식 가격
+            totalPrice += item.price
 
-            // 체결된 값 / 현재 값 = 수익률
-            val recentPrices = jdslStockPriceRepository.findByRecentConcluded(item.stocksId, true, 1)
+            // 최근 체결된 최대 값
+            val recentPrices = jdslStockPriceRepository.findByRecentConcluded(item.stocksId, true, 3)
+            var max = 0
+            for (item in recentPrices){
+                max = Math.max(max, item.price)
+            }
 
-            // 현재 값
-            allCurrentPrice += recentPrices[0].price
+            totalCurrentPrice += max
         }
-        if (allConcludedPrice == 0.0 && allCurrentPrice == 0.0){
-            return 0.0
-        }else{
-            return ((allConcludedPrice / allCurrentPrice) * 100)
+        println(totalCurrentPrice)
+        println(totalPrice)
+        // 수익률 = (현재 주식 가격 / 매수한 주식 가격) * 100 - 100
+        val result = df.format(((totalCurrentPrice / totalPrice) * 100.0) - 100.0)
+        if (totalPrice == 0.0) {
+            return "0.0"
+        } else {
+            return result
         }
     }
 
     fun lastBuyPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
-         val result = jdslStockPriceRepository.findByLastPrice(
+        val result = jdslStockPriceRepository.findByLastPrice(
             isConcluded = true,
             stocksId = stocksId,
             type = "buy",
@@ -137,12 +154,13 @@ class StockService (
             limit = 1,
             offset = 0
         )
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             return 1000
         }
 
         return result[0].price
     }
+
     fun lastSellPrice(stocksId: Long, from: LocalDateTime, to: LocalDateTime): Int {
         val result = jdslStockPriceRepository.findByLastPrice(
             isConcluded = true,
@@ -153,13 +171,13 @@ class StockService (
             limit = 1,
             offset = 0
         )
-        if (result.isEmpty()){
+        if (result.isEmpty()) {
             return 1000
         }
         return result[0].price
     }
 
-    fun insertSampleData(stocksId: Long, timestamp: LocalDateTime, price:Int, amount: Int) {
+    fun insertSampleData(stocksId: Long, timestamp: LocalDateTime, price: Int, amount: Int) {
         stockPriceRepository.save(
             StockPrice(
                 stocksId = stocksId,

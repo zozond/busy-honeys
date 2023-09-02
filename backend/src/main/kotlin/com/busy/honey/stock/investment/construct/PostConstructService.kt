@@ -33,8 +33,8 @@ class PostConstructService(private val userService: UserService,
 
         // 종목 생성
         val stocks1 = this.stocksService.create(CreateStocksDto(stocksName="바쁜벌꿀1", financialStatementsContent="매우 좋은 지표1"))
-        val stocks2 =this.stocksService.create(CreateStocksDto(stocksName="바쁜벌꿀2", financialStatementsContent="매우 좋은 지표2"))
-        val stocks3 =this.stocksService.create(CreateStocksDto(stocksName="바쁜벌꿀3", financialStatementsContent="매우 좋은 지표3"))
+//        val stocks2 =this.stocksService.create(CreateStocksDto(stocksName="바쁜벌꿀2", financialStatementsContent="매우 좋은 지표2"))
+//        val stocks3 =this.stocksService.create(CreateStocksDto(stocksName="바쁜벌꿀3", financialStatementsContent="매우 좋은 지표3"))
 
         // 일별 데이터 자동 생성
         val list = Utils.getOneMonthDateRange()
@@ -64,46 +64,46 @@ class PostConstructService(private val userService: UserService,
 
 
 
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
-
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
-
-            price = random.nextInt(1000, 1000000)
-            amount = random.nextInt(1000, 1000000)
-            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks2.stocksId!!, startDate, price, amount)
+//
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
+//
+//            price = random.nextInt(1000, 1000000)
+//            amount = random.nextInt(1000, 1000000)
+//            this.stockService.insertSampleData(stocks3.stocksId!!, startDate, price, amount)
         }
     }
 
