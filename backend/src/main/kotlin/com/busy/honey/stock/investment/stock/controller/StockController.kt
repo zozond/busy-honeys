@@ -45,11 +45,11 @@ class StockController (private val stockService: StockService,
                         @RequestBody sellingPriceDto: SellingPriceDto
     ): RestApiResponse{
 
-        val askingPrice = this.stockService.changeSellingPrice(sellingPriceId, sellingPriceDto)
+        this.stockService.changeSellingPrice(sellingPriceId, sellingPriceDto)
         this.stockHistoryService.addModifyingSellingStockHistory(sellingPriceId, userId, sellingPriceDto)
 
         val data = mutableMapOf<Any, Any>()
-        data.put("spreadId", sellingPriceId)
+        data.put("stockPriceId", sellingPriceId)
         return RestApiResponse(
             status = "OK",
             description = "",
@@ -68,7 +68,7 @@ class StockController (private val stockService: StockService,
         this.stockHistoryService.addModifyingBuyingStockHistory(buyingPriceId, userId, buyingPriceDto)
         val description = this.stockService.changeBuyingPrice(buyingPriceId, buyingPriceDto)
         val data = mutableMapOf<Any, Any>()
-        data.put("spreadId", buyingPriceId)
+        data.put("stockPriceId", buyingPriceId)
         return RestApiResponse(
             status = "OK",
             description = "",
@@ -84,8 +84,8 @@ class StockController (private val stockService: StockService,
         this.stockHistoryService.addBuyStockHistory(buyStockDto)
 
         val data = mutableMapOf<Any, Any>()
-        val spreadId = this.stockService.buyStock(buyStockDto)
-        data.put("spreadId", spreadId)
+        val stockPriceId = this.stockService.buyStock(buyStockDto)
+        data.put("stockPriceId", stockPriceId)
         return RestApiResponse(
             status = "OK",
             description = "",
@@ -101,8 +101,8 @@ class StockController (private val stockService: StockService,
         this.stockHistoryService.addSellStockHistory(sellStockDto)
 
         val data = mutableMapOf<Any, Any>()
-        val spreadId = this.stockService.sellStock(sellStockDto)
-        data.put("spreadId", spreadId)
+        val stockPriceId = this.stockService.sellStock(sellStockDto)
+        data.put("stockPriceId", stockPriceId)
         return RestApiResponse(
             status = "OK",
             description = "",

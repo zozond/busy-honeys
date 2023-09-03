@@ -1,7 +1,7 @@
 package com.busy.honey.stock.investment.chart.service
 
 import com.busy.honey.stock.investment.chart.dto.ChartDto
-import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepository
 import com.busy.honey.stock.investment.utils.Utils
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -10,7 +10,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Service
-class ChartService (val jdslStockPriceRepository: JdslStockPriceRepositoryImpl){
+class ChartService (val jdslStockPriceRepository: JdslStockPriceRepository){
 
     private fun toLocalDateTime(date: String): LocalDateTime {
         return LocalDateTime.parse("$date 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

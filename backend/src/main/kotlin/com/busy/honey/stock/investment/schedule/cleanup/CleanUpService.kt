@@ -1,6 +1,6 @@
 package com.busy.honey.stock.investment.schedule.cleanup
 
-import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepository
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
 import com.busy.honey.stock.investment.utils.Utils
 import org.springframework.scheduling.annotation.Scheduled
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CleanUpService (private val stockPriceRepository: StockPriceRepository,
-                      private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
+                      private val jdslStockPriceRepository: JdslStockPriceRepository
 ){
 
     @Scheduled(cron = "* * */1 * * *")

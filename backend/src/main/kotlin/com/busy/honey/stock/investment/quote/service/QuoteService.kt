@@ -1,14 +1,14 @@
 package com.busy.honey.stock.investment.quote.service
 
 import com.busy.honey.stock.investment.quote.entity.Quote
-import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepository
 import com.busy.honey.stock.investment.stocks.repository.StocksRepository
 import com.busy.honey.stock.investment.utils.Utils
 import org.springframework.stereotype.Service
 
 @Service
 class QuoteService (
-    private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl,
+    private val jdslStockPriceRepository: JdslStockPriceRepository,
     private val stocksRepository: StocksRepository
 ){
 

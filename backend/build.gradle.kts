@@ -1,38 +1,43 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.1.2"
-	id("io.spring.dependency-management") version "1.1.0"
+	id("org.springframework.boot") version "3.1.3"
+	id("io.spring.dependency-management") version "1.1.3"
+	id ("org.jetbrains.kotlin.plugin.allopen") version "1.8.22"
+	id ("org.jetbrains.kotlin.plugin.noarg") version "1.8.22"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
 }
 
+noArg {
+	annotation("javax.persistence.Entity")
+}
+
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
 group = "com.busy.honey.stock"
 version = "1.0.0"
-
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
-}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
+
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
-	// https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.0.0")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
@@ -47,6 +52,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.mockk:mockk:1.13.5")
 
+	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

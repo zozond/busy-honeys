@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserStockService (
-    private val userStockRepository: UserStockRepository,
-    private val queryFactory: SpringDataQueryFactory
+    val userStockRepository: UserStockRepository,
+    val queryFactory: SpringDataQueryFactory
 ){
     fun getStockList(userId: Long): List<UserStock>{
         return queryFactory.listQuery<UserStock> {

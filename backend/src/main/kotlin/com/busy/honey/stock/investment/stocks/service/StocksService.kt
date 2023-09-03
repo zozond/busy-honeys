@@ -10,18 +10,21 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StocksService(private val stocksRepository: StocksRepository,
-                    private val stockService: StockService
+class StocksService(
+    val stocksRepository: StocksRepository,
+    val stockService: StockService
 ) {
 
     fun create(createStocksDto: CreateStocksDto): Stocks {
-        val stocks = stocksRepository.save(Stocks(
-            stocksId = null,
-            stocksName = createStocksDto.stocksName,
-            financialStatementsContent = createStocksDto.financialStatementsContent,
-            stockShares = 10000,
-            createdAt = LocalDateTime.now()
-        ))
+        val stocks = stocksRepository.save(
+            Stocks(
+                stocksId = null,
+                stocksName = createStocksDto.stocksName,
+                financialStatementsContent = createStocksDto.financialStatementsContent,
+                stockShares = 10000,
+                createdAt = LocalDateTime.now()
+            )
+        )
 
         stockService.initStocks(
             stocksId = stocks.stocksId!!, price = 1000, amount = 10000, userId = 1L
@@ -34,7 +37,7 @@ class StocksService(private val stocksRepository: StocksRepository,
     fun update(stocksId: Long, updateStocksDto: UpdateStocksDto): Stocks {
         val optionalStocks = stocksRepository.findById(stocksId)
 
-        if (optionalStocks.isEmpty){
+        if (optionalStocks.isEmpty) {
             throw Exception("생성되지 않은 종목을 업데이트 하려고 함")
         }
 
@@ -44,13 +47,13 @@ class StocksService(private val stocksRepository: StocksRepository,
         return stocksRepository.save(stocks)
     }
 
-    fun delete(stocksId: Long){
+    fun delete(stocksId: Long) {
         stocksRepository.deleteById(stocksId)
     }
 
     fun getStocks(stocksId: Long): Stocks? {
         val optionalStocks = stocksRepository.findById(stocksId)
-        if (optionalStocks.isEmpty){
+        if (optionalStocks.isEmpty) {
             throw Exception("종목이 없습니다.")
         }
 
@@ -58,7 +61,7 @@ class StocksService(private val stocksRepository: StocksRepository,
     }
 
 
-    fun getAllStocks(): List<Stocks>{
+    fun getAllStocks(): List<Stocks> {
         return stocksRepository.findAll()
     }
 }

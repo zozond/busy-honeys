@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class StockHistoryService (private val stockHistoryRepository: StockHistoryRepository){
+class StockHistoryService (val stockHistoryRepository: StockHistoryRepository){
 
     fun getHistory(userId: Long, limit: Int, offset: Int): List<StockHistory>{
         return stockHistoryRepository.findByUserId(userId, PageRequest.of(offset, limit, Sort.by("timestamp").descending()))
@@ -20,7 +20,6 @@ class StockHistoryService (private val stockHistoryRepository: StockHistoryRepos
     fun addBuyStockHistory(buyStockDto: BuyStockDto){
         stockHistoryRepository.save(
             StockHistory(
-                stockHistoryId = null,
                 stocksId = buyStockDto.stocksId,
                 stockAmount = buyStockDto.stockAmount,
                 price = buyStockDto.bidPrice,
@@ -34,7 +33,6 @@ class StockHistoryService (private val stockHistoryRepository: StockHistoryRepos
     fun addSellStockHistory(sellStockDto: SellStockDto){
         stockHistoryRepository.save(
             StockHistory(
-                stockHistoryId = null,
                 stocksId = sellStockDto.stocksId,
                 stockAmount = sellStockDto.stockAmount,
                 price = sellStockDto.askPrice,
@@ -55,7 +53,6 @@ class StockHistoryService (private val stockHistoryRepository: StockHistoryRepos
         val sellingStock = optionalSellingStock.get()
         stockHistoryRepository.save(
             StockHistory(
-                stockHistoryId = null,
                 stocksId = sellingStock.stocksId,
                 stockAmount = sellingStock.stockAmount,
                 price = sellingStock.price,
@@ -75,7 +72,6 @@ class StockHistoryService (private val stockHistoryRepository: StockHistoryRepos
         val buyingStock = optionalBuyingStock.get()
         stockHistoryRepository.save(
             StockHistory(
-                stockHistoryId = null,
                 stocksId = buyingStock.stocksId,
                 stockAmount = buyingStock.stockAmount,
                 price = buyingStock.price,

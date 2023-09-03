@@ -5,12 +5,12 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name="stocks")
-open class Stocks(
+class Stocks(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    open var stocksId: Long?,
-    open var stocksName: String,
-    open var financialStatementsContent: String,
-    open var stockShares: Long,
-    open var createdAt: LocalDateTime
+    var stocksId: Long?,
+    var stocksName: String,
+    var financialStatementsContent: String,
+    var stockShares: Long,
+    var createdAt: LocalDateTime
 )

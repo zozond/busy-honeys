@@ -5,19 +5,17 @@ import com.busy.honey.stock.investment.accounts.entity.Account
 import com.busy.honey.stock.investment.users.dto.CreateUserDto
 import com.busy.honey.stock.investment.users.dto.UpdateUserDto
 import com.busy.honey.stock.investment.users.entity.User
-import com.busy.honey.stock.investment.users.repository.JdslUserRepositoryImpl
+import com.busy.honey.stock.investment.users.repository.JdslUserRepository
 import com.busy.honey.stock.investment.users.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class UserService (private val userRepository: UserRepository,
-                   private val jdslUserRepository: JdslUserRepositoryImpl,
-                   private val accountsRepository: AccountsRepository
+class UserService (val userRepository: UserRepository,
+                   val jdslUserRepository: JdslUserRepository,
+                   val accountsRepository: AccountsRepository
 ){
-
-    
     @Transactional
     fun create(createUserDto: CreateUserDto): User{
         val account = accountsRepository.save(Account(accountId = null, money = 1000000))

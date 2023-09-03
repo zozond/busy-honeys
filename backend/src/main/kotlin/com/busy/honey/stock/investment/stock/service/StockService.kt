@@ -6,7 +6,7 @@ import com.busy.honey.stock.investment.stock.dto.SellStockDto
 import com.busy.honey.stock.investment.stock.dto.SellingPriceDto
 import com.busy.honey.stock.investment.stock.entity.StockPrice
 import com.busy.honey.stock.investment.stock.entity.UserStock
-import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepository
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 class StockService(
     private val stockPriceRepository: StockPriceRepository,
     private val userStockService: UserStockService,
-    private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
+    private val jdslStockPriceRepository: JdslStockPriceRepository
 ) {
 
     @Transactional
@@ -57,8 +57,8 @@ class StockService(
     }
 
 
-    fun buyStock(buyStockDto: BuyStockDto) {
-        stockPriceRepository.save(
+    fun buyStock(buyStockDto: BuyStockDto) : Long{
+        val result = stockPriceRepository.save(
             StockPrice(
                 stocksId = buyStockDto.stocksId,
                 price = buyStockDto.bidPrice,
@@ -70,11 +70,13 @@ class StockService(
                 stockPriceId = null
             )
         )
+
+        return result.stockPriceId!!
     }
 
-    fun sellStock(sellStockDto: SellStockDto) {
+    fun sellStock(sellStockDto: SellStockDto): Long {
         if (userStockService.haveStock(userId = sellStockDto.userId, stocksId = sellStockDto.stocksId)) {
-            stockPriceRepository.save(
+            val result = stockPriceRepository.save(
                 StockPrice(
                     stocksId = sellStockDto.stocksId,
                     price = sellStockDto.askPrice,
@@ -86,8 +88,9 @@ class StockService(
                     stockPriceId = null
                 )
             )
+            return result.stockPriceId!!
         }
-
+        return 0L
     }
 
     fun initStocks(stocksId: Long, price: Int, amount: Int, userId: Long) {

@@ -3,7 +3,7 @@ package com.busy.honey.stock.investment.schedule.conclude
 import com.busy.honey.stock.investment.accounts.service.AccountsService
 import com.busy.honey.stock.investment.stock.entity.StockPrice
 import com.busy.honey.stock.investment.stock.entity.UserStock
-import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepositoryImpl
+import com.busy.honey.stock.investment.stock.repository.JdslStockPriceRepository
 import com.busy.honey.stock.investment.stock.repository.StockPriceRepository
 import com.busy.honey.stock.investment.stock.service.UserStockService
 import com.busy.honey.stock.investment.users.service.UserService
@@ -19,7 +19,7 @@ class StockSchedulingService (private val userService: UserService,
                               private val userStockService: UserStockService,
                               private val accountsService: AccountsService,
                               private val stockPriceRepository: StockPriceRepository,
-                              private val jdslStockPriceRepository: JdslStockPriceRepositoryImpl
+                              private val jdslStockPriceRepository: JdslStockPriceRepository
 ){
 
     @Scheduled(cron = "*/1 * * * * *")

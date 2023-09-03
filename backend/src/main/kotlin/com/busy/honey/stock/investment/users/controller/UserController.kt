@@ -61,7 +61,7 @@ class UserController (private val userService: UserService,
         val data = mutableMapOf<Any, Any>()
         data["createdAt"] = user.createdAt.toString()
         data["email"] = user.email
-        data["userName"] = user.username
+        data["username"] = user.username
         data["userId"] = user.userId!!
         data["accountId"] = user.accountId
 

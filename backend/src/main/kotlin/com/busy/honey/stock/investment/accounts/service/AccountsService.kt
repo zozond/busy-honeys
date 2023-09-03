@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class AccountsService (private val accountsRepository: AccountsRepository){
+class AccountsService (val accountsRepository: AccountsRepository){
 
     fun findById(accountsId: Long): Account?{
         val optionalAccount = accountsRepository.findById(accountsId);
