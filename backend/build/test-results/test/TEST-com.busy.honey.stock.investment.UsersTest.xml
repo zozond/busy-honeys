@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.busy.honey.stock.investment.UsersTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-09-10T06:58:47" hostname="LOCALHOST" time="0.003">
+  <properties/>
+  <testcase name="Then: 유저 생성 성공" classname="com.busy.honey.stock.investment.UsersTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
