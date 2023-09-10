@@ -36,9 +36,9 @@
 
 ## API 명세
 
-### accounts (계좌)
+### accounts (계좌) - 계좌 출금/입금과 관련된 API 
 
-#### POST /account
+#### POST /account - 출금
 
 - Request
 
@@ -62,7 +62,7 @@
 
 ### auth (인증)
 
-#### POST /login
+#### POST /login - 로그인 
 
 - Request
 
@@ -86,12 +86,45 @@
 ```
 
 ### chart (차트)
+#### Post /chart/{:stockId} - 주식 차트 조회
+- Request
+```json
+{
+  "from": "String format(yyyy-mm-dd)",
+  "to": "String format(yyyy-mm-dd)",
+  "unit": "String format(day|month|week)"
+}
+```
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": [{
+    "highPrice": "Int", 
+    "lowPrice": "Int", 
+    "volume": "Int", 
+    "closePrice": "Int",
+    "openPrice": "Int",
+    "from": "String format(yyyy-mm-dd)",
+    "to": "String format(yyyy-mm-dd)"
+  },
+  {
+    "highPrice": "Int", 
+    "lowPrice": "Int", 
+    "volume": "Int", 
+    "closePrice": "Int",
+    "openPrice": "Int",
+    "from": "String format(yyyy-mm-dd)",
+    "to": "String format(yyyy-mm-dd)"
+  }]
+}
+```
 
 ### init (시작 시 초기화)
 
 ### quote (호가)
-
-#### GET /quote/{stocksId}
+#### GET /quote/{stocksId} - 호가창 보기 (특정 종목만)
 
 - Request
 - Response
@@ -114,17 +147,210 @@
 }
 ```
 
-### response (응답 포맷)
-
-### schedule (스케줄)
-
 ### stock (주식)
 
+#### Get /stock/{:userId}/history?limit=10&offset=0  - 주식 주문 내역 확인
+- Request (limit = "가져올 갯수, default=10", offset = "페이지 시작점, default=0")
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "history": [ 
+      {
+        "timestamp": "2023-01-01 01:01:01.111111", 
+        "price": "Int", 
+        "stockAmount": "Int", 
+        "stocks": "String" 
+      } 
+    ]
+  }
+}
+```
+
+#### Post /stock/buy - 매수
+
+- Request
+
+```json
+{
+  "userId": "String",
+  "stockId": "String",
+  "stockAmount": "Int",
+  "bidPrice": "Int"   
+}
+```
+
+- Response
+
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "stockPriceId": "Long"
+  }
+}
+```
+
+#### Post /stock/sell - 매도
+- Request
+```json
+{
+  "userId": "String",
+  "stockId": "String",
+  "stockAmount": "Int",
+  "askPrice": "Int" 
+}
+```
+- Response
+```json
+{
+	"status": "OK | ERROR",
+    "description": "String",
+	"data": {
+		"stockPriceId": "Long" 
+	}
+}
+```
+
+#### Put /stock/{:userId}/{:stockPriceId}/buy - 주문 매수 내역 정정
+
+- Request
+```json
+{
+  "stockAmount": "Int",
+  "bidPrice": "Int"   
+}
+```
+
+- Response
+```json
+{
+	"status": "OK | ERROR",
+    "description": "String",
+	"data": {
+		"stockPriceId": "Long"
+	}
+}
+```
+
+#### Put /stock/{:userId}/{:stockPriceId}/sell - 주문 매도 내역 정정
+- Request
+```json
+{
+  "stockAmount": "Int",
+  "askPrice": "Int"
+}
+```
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "stockPriceId": "Long"
+  }
+}
+```
+  
+#### GET /stock/{userId}/history - 주식 주문 내역 확인
+- Request
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "history": [
+      {
+        "stockHistoryId": "Long",
+        "userId": "Long",
+        "timestamp": "String",
+        "price": "Int",
+        "stocksId": "Long",
+        "stockAmount": "Int",
+        "historyType": "String"
+      }
+    ]
+  }
+}
+```
+
+
 ### stocks (종목)
+#### Get /stocks/{:stocksId} - 종목 정보 보기
+- Request
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "stocksName": "String",
+    "createdAt": "2023-01-01 11:11:11.111111",
+    "financialStatementsContent": "String",
+    "stockShares": "Long",
+  }
+}
+```
+
+#### Post /stocks - 종목 등록
+- Request
+```json
+{
+  "stocksName": "String",
+  "financialStatementsContent": "String"
+}
+```
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "stocksName": "String",
+    "createdAt": "2023-01-01 11:11:11.111111",
+    "financialStatementsContent": "String", 
+    "stockShares": "Long"
+  }
+}
+```
+#### Delete /stocks/{:stocksId} - 종목 등록 취소
+- Request
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String"
+}
+```
+#### Put /stocks/{:stocksId} - 종목 정보 업데이트
+- Request
+```json
+{
+  "stocksName": "String",
+  "financialStatementsContent": "String"
+}
+```
+- Response
+```json
+{
+  "status": "OK | ERROR",
+  "description": "String",
+  "data": {
+    "stocksName": "String",
+    "createdAt": "2023-01-01 11:11:11.111111",
+    "financialStatementsContent": "String",
+    "stockShares": "Long"
+  }
+}
+```
 
 ### users (유저)
 
-#### GET /users/{userId}
+#### GET /users/{userId} - 유저 조회
 
 - Request
 - Response
@@ -151,7 +377,7 @@
 }
 ```
 
-#### POST /users
+#### POST /users - 유저 생성
 
 - Request
 
@@ -179,7 +405,7 @@
 }
 ```
 
-#### DELETE /users/{userId}
+#### DELETE /users/{userId} - 유저 삭제
 
 - Request
 - Response
@@ -192,7 +418,7 @@
 }
 ```
 
-#### PUT /users/{userId}
+#### PUT /users/{userId} - 유저 정보 수정
 
 - Request
 
@@ -213,8 +439,6 @@
   "data": "Null"
 }
 ```
-
-### utils (유틸리티)
 
 
 

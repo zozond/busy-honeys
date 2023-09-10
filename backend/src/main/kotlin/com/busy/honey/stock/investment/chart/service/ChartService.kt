@@ -53,10 +53,10 @@ class ChartService (val jdslStockPriceRepository: JdslStockPriceRepository){
             val volume = jdslStockPriceRepository.countConcludedTrade(stocksId, startDate, endDate)
 
             val item = mutableMapOf<String, Any>()
-            item.put("openPrice", openStockPrice.get(0).price.toLong())
-            item.put("closePrice", closeStockPrice.get(0).price.toLong())
-            item.put("highPrice", highStockPrice.get(0).price.toLong())
-            item.put("lowPrice", lowStockPrice.get(0).price.toLong())
+            item.put("openPrice", openStockPrice.get(0).price)
+            item.put("closePrice", closeStockPrice.get(0).price)
+            item.put("highPrice", highStockPrice.get(0).price)
+            item.put("lowPrice", lowStockPrice.get(0).price)
             item.put("volume", volume)
             item.put("date", Utils.toDateString(startDate))
 
